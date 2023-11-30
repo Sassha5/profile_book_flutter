@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 
 import 'profiles/profile_add_edit_page.dart';
 import 'profiles/profile_list_page.dart';
@@ -12,9 +13,11 @@ class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
     required this.settingsController,
+    required this.profileController,
   });
 
   final SettingsController settingsController;
+  final ProfileController profileController;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,7 @@ class MyApp extends StatelessWidget {
                     return const ProfileAddEditPage();
                   case ProfilesListView.routeName:
                   default:
-                    return ProfilesListView();
+                    return ProfilesListView(controller: profileController);
                 }
               },
             );
