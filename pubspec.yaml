@@ -10,12 +10,16 @@ environment:
   sdk: '>=3.2.1 <4.0.0'
 
 dependencies:
+  injectable:  
+  get_it:  
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
 
 dev_dependencies:
+  injectable_generator:  
+  build_runner:  
   flutter_test:
     sdk: flutter
 

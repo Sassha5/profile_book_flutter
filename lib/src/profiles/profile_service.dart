@@ -1,5 +1,7 @@
+import 'package:injectable/injectable.dart';
 import 'package:profile_book_flutter/src/profiles/profile.dart';
 
+@singleton
 class ProfileService {
   final List<Profile> items = [Profile(1), Profile(2), Profile(3)];
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:profile_book_flutter/src/profiles/profile.dart';
 import 'package:profile_book_flutter/src/profiles/profile_service.dart';
 
+@singleton
 class ProfileController with ChangeNotifier {
   ProfileController(this._profileService);
 

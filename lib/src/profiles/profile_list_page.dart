@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 
 import '../settings/settings_view.dart';
@@ -8,13 +9,11 @@ import 'profile_add_edit_page.dart';
 class ProfilesListView extends StatefulWidget {
   static const routeName = '/';
 
-  const ProfilesListView({super.key, required this.controller});
-
-  final ProfileController controller;
+  const ProfilesListView({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _ProfilesListViewState(controller: controller);
+    return _ProfilesListViewState();
   }
 }
 
@@ -22,11 +21,14 @@ class ProfilesListView extends StatefulWidget {
 class _ProfilesListViewState extends State<ProfilesListView> {
   _ProfilesListViewState({
     key,
-    required this.controller,
   });
 
+  @override void initState() {
+    controller.loadItems().then((value) => super.initState());
+  }
+
   int? _selectedIndex;
-  final ProfileController controller;
+  final ProfileController controller = getIt.get<ProfileController>();
 
   @override
   Widget build(BuildContext context) {

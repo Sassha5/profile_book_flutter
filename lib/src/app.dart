@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
+import 'package:profile_book_flutter/src/di/di_init.dart';
 
 import 'profiles/profile_add_edit_page.dart';
 import 'profiles/profile_list_page.dart';
@@ -12,12 +12,7 @@ import 'settings/settings_view.dart';
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
-    required this.settingsController,
-    required this.profileController,
   });
-
-  final SettingsController settingsController;
-  final ProfileController profileController;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +20,8 @@ class MyApp extends StatelessWidget {
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
+    var settingsController = getIt.get<SettingsController>();
+
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -76,7 +73,7 @@ class MyApp extends StatelessWidget {
                     return const ProfileAddEditPage();
                   case ProfilesListView.routeName:
                   default:
-                    return ProfilesListView(controller: profileController);
+                    return ProfilesListView();
                 }
               },
             );
