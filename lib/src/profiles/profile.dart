@@ -1,9 +1,14 @@
-/// A placeholder class that represents an entity or model.
+import 'package:isar/isar.dart';
+
+part 'profile.g.dart';
+
+@Collection()
 class Profile {
+  Profile();
 
-  const Profile(this.id);
+  Id id = Isar.autoIncrement;
 
-  final int id;
+  String name = "test";
 
-  final String name = "";
+  DateTime creationDate = DateTime.now();
 }

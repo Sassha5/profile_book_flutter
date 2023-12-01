@@ -23,8 +23,10 @@ class _ProfilesListViewState extends State<ProfilesListView> {
     key,
   });
 
-  @override void initState() {
-    controller.loadItems().then((value) => super.initState());
+  @override
+  void initState() {
+    controller.loadItems();
+    super.initState();
   }
 
   int? _selectedIndex;
@@ -43,11 +45,10 @@ class _ProfilesListViewState extends State<ProfilesListView> {
 
     var profileActions = [
       IconButton(
-        icon: const Icon(Icons.delete),
-        onPressed: () {
-          controller.delete(controller.items.elementAt(_selectedIndex!));
-        } 
-      ),
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            controller.delete(controller.items.elementAt(_selectedIndex!));
+          }),
     ];
 
     return Scaffold(
@@ -63,43 +64,42 @@ class _ProfilesListViewState extends State<ProfilesListView> {
       // building all Widgets up front, the ListView.builder constructor lazily
       // builds Widgets as they’re scrolled into view.
       body: ListenableBuilder(
-        listenable: controller,
-        builder: (context, widget) {
-          return ListView.builder(
-            // Providing a restorationId allows the ListView to restore the
-            // scroll position when a user leaves and returns to the app after it
-            // has been killed while running in the background.
-            restorationId: 'sampleItemListView',
-            itemCount: controller.items.length,
-            itemBuilder: (BuildContext context, int index) {
-              final item = controller.items.elementAt(index);
-              return ListTile(
-                  title: Text('SampleItem ${item.id}'),
-                  leading: const CircleAvatar(
-                    // Display the Flutter Logo image asset.
-                    foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-                  ),
-                  selected: index == _selectedIndex,
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = _selectedIndex == index ? null : index;
+          listenable: controller,
+          builder: (context, widget) {
+            return ListView.builder(
+              // Providing a restorationId allows the ListView to restore the
+              // scroll position when a user leaves and returns to the app after it
+              // has been killed while running in the background.
+              restorationId: 'sampleItemListView',
+              itemCount: controller.items.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = controller.items.elementAt(index);
+                return ListTile(
+                    title: Text('${item.name} ${item.id}'),
+                    subtitle: Text(item.creationDate.toString()),
+                    leading: const CircleAvatar(
+                      // Display the Flutter Logo image asset.
+                      foregroundImage:
+                          AssetImage('assets/images/flutter_logo.png'),
+                    ),
+                    selected: index == _selectedIndex,
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = _selectedIndex == index ? null : index;
+                      });
                     });
-          
-                    // Navigator.restorablePushNamed(
-                    //   context,
-                    //   ProfileAddEditPage.routeName,
-                    // );
-                  });
-            },
-          );
-        }
-      ),
+              },
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
         shape: const CircleBorder(),
         tooltip: 'Add',
         onPressed: () {
-          controller.addOrUpdate(Profile(controller.items.length + 1));
+          Navigator.restorablePushNamed(
+            context,
+            ProfileAddEditPage.routeName,
+          );
         },
         child: const Icon(Icons.add, color: Colors.white, size: 28),
       ),

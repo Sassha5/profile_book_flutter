@@ -9,7 +9,7 @@ class ProfileController with ChangeNotifier {
 
   final ProfileService _profileService;
 
-  late Iterable<Profile> items;
+  Iterable<Profile> items = List.empty();
 
   Future loadItems() async {
     items = await _profileService.getProfiles();

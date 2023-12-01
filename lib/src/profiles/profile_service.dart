@@ -1,23 +1,27 @@
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
+import 'package:profile_book_flutter/src/isar/isar_service.dart';
 import 'package:profile_book_flutter/src/profiles/profile.dart';
 
 @singleton
 class ProfileService {
-  final List<Profile> items = [Profile(1), Profile(2), Profile(3)];
 
   Future<List<Profile>> getProfiles() async {
-    return items;
+    var db = await IsarService.getDB();
+    return db.profiles.where().findAll();
   }
 
   Future add(Profile profile) async {
-    items.add(profile);
+    var db = await IsarService.getDB();
+    db.writeTxn<int>(() => db.profiles.put(profile));
   }
 
   Future update(Profile profile) async {
-    
+
   }
 
   Future delete(Profile profile) async {
-    items.remove(profile);
+    var db = await IsarService.getDB();
+    db.writeTxn<bool>(() => db.profiles.delete(profile.id));
   }
 }
