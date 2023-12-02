@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 
-import '../settings/settings_view.dart';
+import '../settings/settings_page.dart';
 import 'profile_add_edit_page.dart';
 
 class ProfileListPage extends StatefulWidget {

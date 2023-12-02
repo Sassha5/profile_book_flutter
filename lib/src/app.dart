@@ -7,7 +7,7 @@ import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'profiles/profile_add_edit_page.dart';
 import 'profiles/profile_list_page.dart';
 import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
+import 'settings/settings_page.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
