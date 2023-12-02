@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
                     return const ProfileAddEditPage();
                   case ProfilesListView.routeName:
                   default:
-                    return ProfilesListView();
+                    return const ProfilesListView();
                 }
               },
             );

@@ -13,7 +13,7 @@ class ProfileService {
 
   Future add(Profile profile) async {
     var db = await IsarService.getDB();
-    db.writeTxn<int>(() => db.profiles.put(profile));
+    db.writeTxnSync<int>(() => db.profiles.putSync(profile));
   }
 
   Future update(Profile profile) async {
@@ -22,6 +22,6 @@ class ProfileService {
 
   Future delete(Profile profile) async {
     var db = await IsarService.getDB();
-    db.writeTxn<bool>(() => db.profiles.delete(profile.id));
+    db.writeTxnSync<bool>(() => db.profiles.deleteSync(profile.id));
   }
 }

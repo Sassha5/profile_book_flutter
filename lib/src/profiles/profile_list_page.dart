@@ -3,7 +3,6 @@ import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 
 import '../settings/settings_view.dart';
-import 'profile.dart';
 import 'profile_add_edit_page.dart';
 
 class ProfilesListView extends StatefulWidget {
@@ -19,9 +18,6 @@ class ProfilesListView extends StatefulWidget {
 
 /// Displays a list of SampleItems.
 class _ProfilesListViewState extends State<ProfilesListView> {
-  _ProfilesListViewState({
-    key,
-  });
 
   @override
   void initState() {
@@ -48,6 +44,9 @@ class _ProfilesListViewState extends State<ProfilesListView> {
           icon: const Icon(Icons.delete),
           onPressed: () {
             controller.delete(controller.items.elementAt(_selectedIndex!));
+            setState(() {
+              _selectedIndex = null;
+            });
           }),
     ];
 
