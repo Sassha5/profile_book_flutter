@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
@@ -5,19 +6,19 @@ import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 import '../settings/settings_view.dart';
 import 'profile_add_edit_page.dart';
 
-class ProfilesListView extends StatefulWidget {
+class ProfileListPage extends StatefulWidget {
   static const routeName = '/';
 
-  const ProfilesListView({super.key});
+  const ProfileListPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _ProfilesListViewState();
+    return _ProfileListPageState();
   }
 }
 
 /// Displays a list of SampleItems.
-class _ProfilesListViewState extends State<ProfilesListView> {
+class _ProfileListPageState extends State<ProfileListPage> {
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _ProfilesListViewState extends State<ProfilesListView> {
       IconButton(
         icon: const Icon(Icons.settings),
         onPressed: () {
-          Navigator.restorablePushNamed(context, SettingsView.routeName);
+          Beamer.of(context).beamToNamed(SettingsPage.routeName);
         },
       ),
     ];
@@ -44,9 +45,7 @@ class _ProfilesListViewState extends State<ProfilesListView> {
           icon: const Icon(Icons.delete),
           onPressed: () {
             controller.delete(controller.items.elementAt(_selectedIndex!));
-            setState(() {
-              _selectedIndex = null;
-            });
+            setState(() => _selectedIndex = null);
           }),
     ];
 
@@ -69,7 +68,7 @@ class _ProfilesListViewState extends State<ProfilesListView> {
               // Providing a restorationId allows the ListView to restore the
               // scroll position when a user leaves and returns to the app after it
               // has been killed while running in the background.
-              restorationId: 'sampleItemListView',
+              restorationId: 'ProfileListView',
               itemCount: controller.items.length,
               itemBuilder: (BuildContext context, int index) {
                 final item = controller.items.elementAt(index);
@@ -83,9 +82,7 @@ class _ProfilesListViewState extends State<ProfilesListView> {
                     ),
                     selected: index == _selectedIndex,
                     onTap: () {
-                      setState(() {
-                        _selectedIndex = _selectedIndex == index ? null : index;
-                      });
+                      setState(() => _selectedIndex = _selectedIndex == index ? null : index);
                     });
               },
             );
@@ -95,10 +92,7 @@ class _ProfilesListViewState extends State<ProfilesListView> {
         shape: const CircleBorder(),
         tooltip: 'Add',
         onPressed: () {
-          Navigator.restorablePushNamed(
-            context,
-            ProfileAddEditPage.routeName,
-          );
+          Beamer.of(context).beamToNamed(ProfileAddEditPage.routeName);
         },
         child: const Icon(Icons.add, color: Colors.white, size: 28),
       ),

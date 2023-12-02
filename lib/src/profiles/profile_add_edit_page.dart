@@ -7,7 +7,7 @@ import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 class ProfileAddEditPage extends StatefulWidget {
   const ProfileAddEditPage({super.key});
 
-  static const routeName = '/sample_item';
+  static const routeName = '/addeditprofile';
 
   @override
   State<ProfileAddEditPage> createState() => _ProfileAddEditPageState();
@@ -40,7 +40,7 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
           var newProfile = Profile();
           newProfile.name = _nameFieldController.text;
           controller.addOrUpdate(newProfile);
-          Navigator.pop(context);
+          Navigator.of(context).maybePop();
         },
         child: const Icon(Icons.save, color: Colors.white, size: 28),
       ),
