@@ -20,6 +20,8 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.1
   beamer: ^1.5.6
+  intl:
+  language_picker: ^0.4.3
 
 dev_dependencies:
   injectable_generator:  

@@ -1,0 +1,7 @@
+{
+    "appTitle": "Profile Book",
+    "@appTitle": {
+        "description": "Название приложения"
+    },
+    "settings": "Настройки"
+}

@@ -22,11 +22,22 @@ class SettingsController with ChangeNotifier {
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
 
+  late Locale _locale;
+  Locale get locale => _locale;
+
+  void setLocale(Locale? newLocale){
+    if (newLocale != null && locale != newLocale){
+      _locale = newLocale;
+      notifyListeners();
+    }
+  }
+
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
+    _locale = await _settingsService.locale();
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
