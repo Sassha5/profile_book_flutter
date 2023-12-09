@@ -19,7 +19,6 @@ class ProfileListPage extends StatefulWidget {
 
 /// Displays a list of SampleItems.
 class _ProfileListPageState extends State<ProfileListPage> {
-
   @override
   void initState() {
     controller.loadItems();
@@ -34,9 +33,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
     var defaultActions = [
       IconButton(
         icon: const Icon(Icons.settings),
-        onPressed: () {
-          Beamer.of(context).beamToNamed(SettingsPage.routeName);
-        },
+        onPressed: () => context.beamToNamed(SettingsPage.routeName),
       ),
     ];
 
@@ -82,7 +79,8 @@ class _ProfileListPageState extends State<ProfileListPage> {
                     ),
                     selected: index == _selectedIndex,
                     onTap: () {
-                      setState(() => _selectedIndex = _selectedIndex == index ? null : index);
+                      setState(() => _selectedIndex =
+                          _selectedIndex == index ? null : index);
                     });
               },
             );
@@ -92,7 +90,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
         shape: const CircleBorder(),
         tooltip: 'Add',
         onPressed: () {
-          Beamer.of(context).beamToNamed(ProfileAddEditPage.routeName);
+          context.beamToNamed(ProfileAddEditPage.routeName);
         },
         child: const Icon(Icons.add, color: Colors.white, size: 28),
       ),

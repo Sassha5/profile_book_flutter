@@ -12,14 +12,12 @@ class SignInPage extends StatelessWidget {
 
   final authService = getIt.get<AuthenticationService>();
 
-  late final BeamerDelegate beamer;
-
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    beamer = Beamer.of(context);
+    var stayLoggedIn = false;
 
     return Scaffold(
       appBar: AppBar(),
@@ -44,24 +42,42 @@ class SignInPage extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            ElevatedButton(
-                onPressed: () async {
-                  var result = await authService.login(
-                      loginController.text, passwordController.text);
+            Row(
+              children: [
+                Checkbox(
+                  value: stayLoggedIn,
+                  onChanged: (value) => stayLoggedIn = value!,
+                ),
+                const Text('Remember me'),
+                const Spacer(),
+                ElevatedButton(
+                    onPressed: () async {
+                      var result = await authService.login(
+                          loginController.text, passwordController.text,
+                          stayLoggedIn: stayLoggedIn);
 
-                  if (result) {
-                    beamer.beamToReplacementNamed(ProfileListPage.routeName);
-                  }
-                },
-                child: const SizedBox(
-                    height: 50,
-                    width: 220,
-                    child: Center(
-                      child: Text('Sign In'),
-                    ))),
+                      if (result && context.mounted) {
+                        context.beamToNamed(ProfileListPage.routeName);
+                      }
+                    },
+                    child: const SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: Center(
+                          child: Text('Sign In'),
+                        ))),
+              ],
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Divider(height: 1, thickness: 1, color: Colors.red,),//not visible
+                Text('or'),
+                Divider(thickness: 1,),
+              ],
+            ),
             TextButton(
-                onPressed: () =>
-                    Beamer.of(context).beamToNamed(SignUpPage.routeName),
+                onPressed: () => context.beamToNamed(SignUpPage.routeName),
                 child: const Text('Sign Up')),
           ],
         ),

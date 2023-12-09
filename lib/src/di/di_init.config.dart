@@ -29,13 +29,13 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.singleton<_i4.ProfileService>(_i4.ProfileService());
     gh.singleton<_i5.SettingsService>(_i5.SettingsService());
     gh.singleton<_i6.UserService>(_i6.UserService());
-    gh.singleton<_i7.ProfileController>(
-        _i7.ProfileController(gh<_i4.ProfileService>()));
     gh.singleton<_i8.SettingsController>(
         _i8.SettingsController(gh<_i5.SettingsService>()));
+    gh.singleton<_i4.ProfileService>(_i4.ProfileService());
+    gh.singleton<_i7.ProfileController>(
+        _i7.ProfileController(gh<_i4.ProfileService>()));
     gh.singleton<_i3.AuthenticationService>(_i3.AuthenticationService());
     return this;
   }

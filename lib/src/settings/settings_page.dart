@@ -1,8 +1,11 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:language_picker/language_picker_dropdown.dart';
 import 'package:language_picker/languages.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
+import 'package:profile_book_flutter/src/users/authentication_service.dart';
+import 'package:profile_book_flutter/src/users/sign_in_page.dart';
 
 import 'settings_controller.dart';
 
@@ -15,7 +18,8 @@ class SettingsPage extends StatelessWidget {
 
   static const routeName = '/settings';
 
-  final SettingsController controller = getIt.get<SettingsController>();
+  final controller = getIt.get<SettingsController>();
+  final authService = getIt.get<AuthenticationService>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +70,21 @@ class SettingsPage extends StatelessWidget {
                 languages: drowpownLanguages,
                 onValuePicked: (Language language) {
                   controller.setLocale(Locale(language.isoCode));
-                })
+                }),
+            Center(
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.logout),
+                  onPressed: () {
+                    authService.logout();
+                    context.beamToReplacementNamed(SignInPage.routeName);
+                  },
+                  label: const SizedBox(
+                      height: 50,
+                      width: 220,
+                      child: Center(
+                        child: Text('Logout'),
+                      ))),
+            ),
           ],
         ),
       ),

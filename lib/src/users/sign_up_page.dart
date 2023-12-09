@@ -11,15 +11,12 @@ class SignUpPage extends StatelessWidget {
 
   final authenticationService = getIt.get<AuthenticationService>();
 
-  late final BeamerDelegate beamer;
-
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    beamer = Beamer.of(context);
 
     return Scaffold(
       appBar: AppBar(),
@@ -57,7 +54,10 @@ class SignUpPage extends StatelessWidget {
             ElevatedButton(
                 onPressed: () async {
                   await _signUp();
-                  beamer.beamBack();
+
+                  if (context.mounted) {
+                    context.beamBack();
+                  }
                 },
                 child: const SizedBox(
                     height: 50,

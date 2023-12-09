@@ -12,7 +12,7 @@ class ProfileController with ChangeNotifier {
   Iterable<Profile> items = List.empty();
 
   Future loadItems() async {
-    items = await _profileService.getProfiles();
+    items = await _profileService.getUserProfiles();
     notifyListeners();
   }
 

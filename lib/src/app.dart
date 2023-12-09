@@ -15,23 +15,13 @@ import 'settings/settings_page.dart';
 class MyApp extends StatelessWidget {
   MyApp({
     super.key,
-  });
-
-
-  @override
-  Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The ListenableBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
-    var settingsController = getIt.get<SettingsController>();
-
+  }){
     Widget startPage = SignInPage();
     if (settingsController.stayLoggedIn && settingsController.userId != null) {
       startPage = const ProfileListPage();
     }
     
-    final routerDelegate = BeamerDelegate(
+    routerDelegate = BeamerDelegate(
       locationBuilder: RoutesLocationBuilder(
         routes: {
           // Return either Widgets or BeamPages if more customization is needed
@@ -58,6 +48,17 @@ class MyApp extends StatelessWidget {
         },
       ).call,
     );
+  }
+
+  late final settingsController = getIt.get<SettingsController>();
+  late final BeamerDelegate routerDelegate;
+
+  @override
+  Widget build(BuildContext context) {
+    // Glue the SettingsController to the MaterialApp.
+    //
+    // The ListenableBuilder Widget listens to the SettingsController for changes.
+    // Whenever the user updates their settings, the MaterialApp is rebuilt.
     
     return ListenableBuilder(
       listenable: settingsController,
