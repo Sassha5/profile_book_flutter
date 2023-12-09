@@ -7,7 +7,7 @@ import '../settings/settings_page.dart';
 import 'profile_add_edit_page.dart';
 
 class ProfileListPage extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/profiles';
 
   const ProfileListPage({super.key});
 

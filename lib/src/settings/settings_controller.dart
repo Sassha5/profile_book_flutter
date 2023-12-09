@@ -26,8 +26,9 @@ class SettingsController with ChangeNotifier {
   late Locale _locale;
   Locale get locale => _locale;
 
-  Id? _userId;
-  Id? get userId => _userId;
+  bool stayLoggedIn = false;
+
+  Id? userId;
 
   void setLocale(Locale? newLocale){
     if (newLocale != null && locale != newLocale){

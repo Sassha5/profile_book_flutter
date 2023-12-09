@@ -34,6 +34,7 @@ class SettingsPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Glue the SettingsController to the theme selection DropdownButton.
             //

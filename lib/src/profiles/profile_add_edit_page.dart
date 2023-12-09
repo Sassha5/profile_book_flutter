@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
+import 'package:profile_book_flutter/src/settings/settings_controller.dart';
 
 /// Displays detailed information about a SampleItem.
 class ProfileAddEditPage extends StatefulWidget {
@@ -15,6 +16,8 @@ class ProfileAddEditPage extends StatefulWidget {
 
 class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
   final ProfileController controller = getIt.get<ProfileController>();
+  final SettingsController settingsController = getIt.get<SettingsController>();
+
   final _nameFieldController = TextEditingController();
 
   @override
@@ -37,7 +40,7 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
         shape: const CircleBorder(),
         tooltip: 'Save',
         onPressed: () {
-          var newProfile = Profile();
+          var newProfile = Profile(userId: settingsController.userId!);
           newProfile.name = _nameFieldController.text;
           controller.addOrUpdate(newProfile);
           Navigator.of(context).maybePop();

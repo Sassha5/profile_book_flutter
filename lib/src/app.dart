@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
+import 'package:profile_book_flutter/src/users/sign_in_page.dart';
+import 'package:profile_book_flutter/src/users/sign_up_page.dart';
 
 import 'profiles/profile_add_edit_page.dart';
 import 'profiles/profile_list_page.dart';
@@ -15,30 +17,6 @@ class MyApp extends StatelessWidget {
     super.key,
   });
 
-  final routerDelegate = BeamerDelegate(
-    locationBuilder: RoutesLocationBuilder(
-      routes: {
-        // Return either Widgets or BeamPages if more customization is needed
-        '/': (context, state, data) => const ProfileListPage(),
-        SettingsPage.routeName: (context, state, data) => SettingsPage(),
-        ProfileAddEditPage.routeName: (context, state, data) => const ProfileAddEditPage(),
-        // '/books/:bookId': (context, state, data) {
-        //   // Take the path parameter of interest from BeamState
-        //   final bookId = state.pathParameters['bookId']!;
-        //   // Collect arbitrary data that persists throughout navigation
-        //   final info = (data as MyObject).info;
-        //   // Use BeamPage to define custom behavior
-        //   return BeamPage(
-        //     key: ValueKey('book-$bookId'),
-        //     title: 'A Book #$bookId',
-        //     popToNamed: '/',
-        //     type: BeamPageType.scaleTransition,
-        //     child: BookDetailsScreen(bookId, info),
-        //   );
-        // }
-      },
-    ).call,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +26,39 @@ class MyApp extends StatelessWidget {
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     var settingsController = getIt.get<SettingsController>();
 
+    Widget startPage = SignInPage();
+    if (settingsController.stayLoggedIn && settingsController.userId != null) {
+      startPage = const ProfileListPage();
+    }
+    
+    final routerDelegate = BeamerDelegate(
+      locationBuilder: RoutesLocationBuilder(
+        routes: {
+          // Return either Widgets or BeamPages if more customization is needed
+          '/': (context, state, data) => startPage,
+          SignInPage.routeName: (context, state, data) => SignInPage(),
+          SignUpPage.routeName: (context, state, data) => SignUpPage(),
+          SettingsPage.routeName: (context, state, data) => SettingsPage(),
+          ProfileListPage.routeName: (context, state, data) => const ProfileListPage(),
+          ProfileAddEditPage.routeName: (context, state, data) => const ProfileAddEditPage(),
+          // '/books/:bookId': (context, state, data) {
+          //   // Take the path parameter of interest from BeamState
+          //   final bookId = state.pathParameters['bookId']!;
+          //   // Collect arbitrary data that persists throughout navigation
+          //   final info = (data as MyObject).info;
+          //   // Use BeamPage to define custom behavior
+          //   return BeamPage(
+          //     key: ValueKey('book-$bookId'),
+          //     title: 'A Book #$bookId',
+          //     popToNamed: '/',
+          //     type: BeamPageType.scaleTransition,
+          //     child: BookDetailsScreen(bookId, info),
+          //   );
+          // }
+        },
+      ).call,
+    );
+    
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -73,11 +84,21 @@ class MyApp extends StatelessWidget {
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appTitle,
 
-          theme: ThemeData(),
-          darkTheme: ThemeData.dark(),
+          theme: lightTheme,
+          darkTheme: darkTheme,
           themeMode: settingsController.themeMode,
         );
       },
     );
   }
 }
+
+ThemeData lightTheme = ThemeData(
+  primaryColor: Colors.amberAccent
+);
+
+ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: Colors.amber,
+  
+);
