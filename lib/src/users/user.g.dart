@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'profile.dart';
+part of 'user.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,81 +9,74 @@ part of 'profile.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetProfileCollection on Isar {
-  IsarCollection<Profile> get profiles => this.collection();
+extension GetUserCollection on Isar {
+  IsarCollection<User> get users => this.collection();
 }
 
-const ProfileSchema = CollectionSchema(
-  name: r'Profile',
-  id: 1266279811925214857,
+const UserSchema = CollectionSchema(
+  name: r'User',
+  id: -7838171048429979076,
   properties: {
-    r'creationDate': PropertySchema(
+    r'login': PropertySchema(
       id: 0,
-      name: r'creationDate',
-      type: IsarType.dateTime,
-    ),
-    r'name': PropertySchema(
-      id: 1,
-      name: r'name',
+      name: r'login',
       type: IsarType.string,
     ),
-    r'userId': PropertySchema(
-      id: 2,
-      name: r'userId',
-      type: IsarType.long,
+    r'password': PropertySchema(
+      id: 1,
+      name: r'password',
+      type: IsarType.string,
     )
   },
-  estimateSize: _profileEstimateSize,
-  serialize: _profileSerialize,
-  deserialize: _profileDeserialize,
-  deserializeProp: _profileDeserializeProp,
+  estimateSize: _userEstimateSize,
+  serialize: _userSerialize,
+  deserialize: _userDeserialize,
+  deserializeProp: _userDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _profileGetId,
-  getLinks: _profileGetLinks,
-  attach: _profileAttach,
+  getId: _userGetId,
+  getLinks: _userGetLinks,
+  attach: _userAttach,
   version: '3.1.0+1',
 );
 
-int _profileEstimateSize(
-  Profile object,
+int _userEstimateSize(
+  User object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.name.length * 3;
+  bytesCount += 3 + object.login.length * 3;
+  bytesCount += 3 + object.password.length * 3;
   return bytesCount;
 }
 
-void _profileSerialize(
-  Profile object,
+void _userSerialize(
+  User object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.creationDate);
-  writer.writeString(offsets[1], object.name);
-  writer.writeLong(offsets[2], object.userId);
+  writer.writeString(offsets[0], object.login);
+  writer.writeString(offsets[1], object.password);
 }
 
-Profile _profileDeserialize(
+User _userDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Profile(
-    userId: reader.readLong(offsets[2]),
-  );
-  object.creationDate = reader.readDateTime(offsets[0]);
+  final object = User();
   object.id = id;
-  object.name = reader.readString(offsets[1]);
+  object.login = reader.readString(offsets[0]);
+  object.password = reader.readString(offsets[1]);
   return object;
 }
 
-P _profileDeserializeProp<P>(
+P _userDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -91,38 +84,36 @@ P _profileDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
-    case 2:
-      return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
-Id _profileGetId(Profile object) {
+Id _userGetId(User object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _profileGetLinks(Profile object) {
+List<IsarLinkBase<dynamic>> _userGetLinks(User object) {
   return [];
 }
 
-void _profileAttach(IsarCollection<dynamic> col, Id id, Profile object) {
+void _userAttach(IsarCollection<dynamic> col, Id id, User object) {
   object.id = id;
 }
 
-extension ProfileQueryWhereSort on QueryBuilder<Profile, Profile, QWhere> {
-  QueryBuilder<Profile, Profile, QAfterWhere> anyId() {
+extension UserQueryWhereSort on QueryBuilder<User, User, QWhere> {
+  QueryBuilder<User, User, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension ProfileQueryWhere on QueryBuilder<Profile, Profile, QWhereClause> {
-  QueryBuilder<Profile, Profile, QAfterWhereClause> idEqualTo(Id id) {
+extension UserQueryWhere on QueryBuilder<User, User, QWhereClause> {
+  QueryBuilder<User, User, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -131,7 +122,7 @@ extension ProfileQueryWhere on QueryBuilder<Profile, Profile, QWhereClause> {
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<User, User, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -153,7 +144,7 @@ extension ProfileQueryWhere on QueryBuilder<Profile, Profile, QWhereClause> {
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<User, User, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -162,7 +153,7 @@ extension ProfileQueryWhere on QueryBuilder<Profile, Profile, QWhereClause> {
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<User, User, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -171,7 +162,7 @@ extension ProfileQueryWhere on QueryBuilder<Profile, Profile, QWhereClause> {
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterWhereClause> idBetween(
+  QueryBuilder<User, User, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -188,62 +179,8 @@ extension ProfileQueryWhere on QueryBuilder<Profile, Profile, QWhereClause> {
   }
 }
 
-extension ProfileQueryFilter
-    on QueryBuilder<Profile, Profile, QFilterCondition> {
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> creationDateEqualTo(
-      DateTime value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'creationDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> creationDateGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'creationDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> creationDateLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'creationDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> creationDateBetween(
-    DateTime lower,
-    DateTime upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'creationDate',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> idEqualTo(Id value) {
+extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
+  QueryBuilder<User, User, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -252,7 +189,7 @@ extension ProfileQueryFilter
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<User, User, QAfterFilterCondition> idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -265,7 +202,7 @@ extension ProfileQueryFilter
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> idLessThan(
+  QueryBuilder<User, User, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -278,7 +215,7 @@ extension ProfileQueryFilter
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> idBetween(
+  QueryBuilder<User, User, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -295,20 +232,20 @@ extension ProfileQueryFilter
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameEqualTo(
+  QueryBuilder<User, User, QAfterFilterCondition> loginEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
+        property: r'login',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameGreaterThan(
+  QueryBuilder<User, User, QAfterFilterCondition> loginGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -316,14 +253,14 @@ extension ProfileQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'name',
+        property: r'login',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameLessThan(
+  QueryBuilder<User, User, QAfterFilterCondition> loginLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -331,14 +268,14 @@ extension ProfileQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'name',
+        property: r'login',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameBetween(
+  QueryBuilder<User, User, QAfterFilterCondition> loginBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -347,7 +284,7 @@ extension ProfileQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
+        property: r'login',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -357,268 +294,302 @@ extension ProfileQueryFilter
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameStartsWith(
+  QueryBuilder<User, User, QAfterFilterCondition> loginStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
+        property: r'login',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameEndsWith(
+  QueryBuilder<User, User, QAfterFilterCondition> loginEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
+        property: r'login',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameContains(
-      String value,
+  QueryBuilder<User, User, QAfterFilterCondition> loginContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
+        property: r'login',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameMatches(
-      String pattern,
+  QueryBuilder<User, User, QAfterFilterCondition> loginMatches(String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
+        property: r'login',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameIsEmpty() {
+  QueryBuilder<User, User, QAfterFilterCondition> loginIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
+        property: r'login',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> nameIsNotEmpty() {
+  QueryBuilder<User, User, QAfterFilterCondition> loginIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
+        property: r'login',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> userIdEqualTo(
-      int value) {
+  QueryBuilder<User, User, QAfterFilterCondition> passwordEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'userId',
+        property: r'password',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> userIdGreaterThan(
-    int value, {
+  QueryBuilder<User, User, QAfterFilterCondition> passwordGreaterThan(
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'userId',
+        property: r'password',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> userIdLessThan(
-    int value, {
+  QueryBuilder<User, User, QAfterFilterCondition> passwordLessThan(
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'userId',
+        property: r'password',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterFilterCondition> userIdBetween(
-    int lower,
-    int upper, {
+  QueryBuilder<User, User, QAfterFilterCondition> passwordBetween(
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'userId',
+        property: r'password',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> passwordStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'password',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> passwordEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'password',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> passwordContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'password',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> passwordMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'password',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> passwordIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'password',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> passwordIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'password',
+        value: '',
       ));
     });
   }
 }
 
-extension ProfileQueryObject
-    on QueryBuilder<Profile, Profile, QFilterCondition> {}
+extension UserQueryObject on QueryBuilder<User, User, QFilterCondition> {}
 
-extension ProfileQueryLinks
-    on QueryBuilder<Profile, Profile, QFilterCondition> {}
+extension UserQueryLinks on QueryBuilder<User, User, QFilterCondition> {}
 
-extension ProfileQuerySortBy on QueryBuilder<Profile, Profile, QSortBy> {
-  QueryBuilder<Profile, Profile, QAfterSortBy> sortByCreationDate() {
+extension UserQuerySortBy on QueryBuilder<User, User, QSortBy> {
+  QueryBuilder<User, User, QAfterSortBy> sortByLogin() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'creationDate', Sort.asc);
+      return query.addSortBy(r'login', Sort.asc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> sortByCreationDateDesc() {
+  QueryBuilder<User, User, QAfterSortBy> sortByLoginDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'creationDate', Sort.desc);
+      return query.addSortBy(r'login', Sort.desc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> sortByName() {
+  QueryBuilder<User, User, QAfterSortBy> sortByPassword() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
+      return query.addSortBy(r'password', Sort.asc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> sortByNameDesc() {
+  QueryBuilder<User, User, QAfterSortBy> sortByPasswordDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterSortBy> sortByUserId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterSortBy> sortByUserIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.desc);
+      return query.addSortBy(r'password', Sort.desc);
     });
   }
 }
 
-extension ProfileQuerySortThenBy
-    on QueryBuilder<Profile, Profile, QSortThenBy> {
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenByCreationDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'creationDate', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenByCreationDateDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'creationDate', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenById() {
+extension UserQuerySortThenBy on QueryBuilder<User, User, QSortThenBy> {
+  QueryBuilder<User, User, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<User, User, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenByName() {
+  QueryBuilder<User, User, QAfterSortBy> thenByLogin() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.asc);
+      return query.addSortBy(r'login', Sort.asc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenByNameDesc() {
+  QueryBuilder<User, User, QAfterSortBy> thenByLoginDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'name', Sort.desc);
+      return query.addSortBy(r'login', Sort.desc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenByUserId() {
+  QueryBuilder<User, User, QAfterSortBy> thenByPassword() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.asc);
+      return query.addSortBy(r'password', Sort.asc);
     });
   }
 
-  QueryBuilder<Profile, Profile, QAfterSortBy> thenByUserIdDesc() {
+  QueryBuilder<User, User, QAfterSortBy> thenByPasswordDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.desc);
+      return query.addSortBy(r'password', Sort.desc);
     });
   }
 }
 
-extension ProfileQueryWhereDistinct
-    on QueryBuilder<Profile, Profile, QDistinct> {
-  QueryBuilder<Profile, Profile, QDistinct> distinctByCreationDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'creationDate');
-    });
-  }
-
-  QueryBuilder<Profile, Profile, QDistinct> distinctByName(
+extension UserQueryWhereDistinct on QueryBuilder<User, User, QDistinct> {
+  QueryBuilder<User, User, QDistinct> distinctByLogin(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'login', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Profile, Profile, QDistinct> distinctByUserId() {
+  QueryBuilder<User, User, QDistinct> distinctByPassword(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'userId');
+      return query.addDistinctBy(r'password', caseSensitive: caseSensitive);
     });
   }
 }
 
-extension ProfileQueryProperty
-    on QueryBuilder<Profile, Profile, QQueryProperty> {
-  QueryBuilder<Profile, int, QQueryOperations> idProperty() {
+extension UserQueryProperty on QueryBuilder<User, User, QQueryProperty> {
+  QueryBuilder<User, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<Profile, DateTime, QQueryOperations> creationDateProperty() {
+  QueryBuilder<User, String, QQueryOperations> loginProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'creationDate');
+      return query.addPropertyName(r'login');
     });
   }
 
-  QueryBuilder<Profile, String, QQueryOperations> nameProperty() {
+  QueryBuilder<User, String, QQueryOperations> passwordProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'name');
-    });
-  }
-
-  QueryBuilder<Profile, int, QQueryOperations> userIdProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'userId');
+      return query.addPropertyName(r'password');
     });
   }
 }

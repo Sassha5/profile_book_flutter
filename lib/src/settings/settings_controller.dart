@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 import 'settings_service.dart';
 
@@ -24,6 +25,9 @@ class SettingsController with ChangeNotifier {
 
   late Locale _locale;
   Locale get locale => _locale;
+
+  Id? _userId;
+  Id? get userId => _userId;
 
   void setLocale(Locale? newLocale){
     if (newLocale != null && locale != newLocale){
