@@ -56,7 +56,7 @@ class SignUpPage extends StatelessWidget {
                   var result = await _signUp();
 
                   if (result && context.mounted) {
-                    context.beamBack();
+                    context.beamBack(data: loginController.text);
                   }
                 },
                 child: const SizedBox(

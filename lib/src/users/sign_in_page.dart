@@ -24,6 +24,12 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (context.currentBeamLocation.data is String){
+      setState(() {
+        loginController.text = context.currentBeamLocation.data as String;
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(

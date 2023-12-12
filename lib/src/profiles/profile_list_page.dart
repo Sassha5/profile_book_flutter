@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 
@@ -70,8 +71,8 @@ class _ProfileListPageState extends State<ProfileListPage> {
               itemBuilder: (BuildContext context, int index) {
                 final item = controller.items.elementAt(index);
                 return ListTile(
-                    title: Text('${item.name} ${item.id}'),
-                    subtitle: Text(item.creationDate.toString()),
+                    title: Text(item.name),
+                    subtitle: Text(DateFormat('dd.MM.yyyy').format(item.creationDate)),
                     leading: const CircleAvatar(
                       // Display the Flutter Logo image asset.
                       foregroundImage:

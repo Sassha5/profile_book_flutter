@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
-import 'package:profile_book_flutter/src/users/authentication_service.dart';
 import 'package:profile_book_flutter/src/users/sign_in_page.dart';
 import 'package:profile_book_flutter/src/users/sign_up_page.dart';
 
@@ -18,25 +17,11 @@ class MyApp extends StatelessWidget {
     super.key,
   }) {
     Widget startPage = const SignInPage();
-    if (settingsController.stayLoggedIn && settingsController.userId != null) {
+    if (settingsController.userId != null) {
       startPage = const ProfileListPage();
     }
 
     routerDelegate = BeamerDelegate(
-      guards: [
-        BeamGuard(
-          pathPatterns: [ProfileListPage.routeName],
-          check: (context, state) =>
-              getIt.get<AuthenticationService>().isLoggedIn,
-          beamToNamed: (_, __) => SignInPage.routeName,
-        ),
-        BeamGuard(
-          pathPatterns: [SignInPage.routeName],
-          check: (context, state) =>
-              !getIt.get<AuthenticationService>().isLoggedIn,
-          beamToNamed: (_, __) => ProfileListPage.routeName,
-        ),
-      ],
       locationBuilder: RoutesLocationBuilder(
         routes: {
           // Return either Widgets or BeamPages if more customization is needed

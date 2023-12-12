@@ -12,7 +12,6 @@ class AuthenticationService {
   final settingsController = getIt.get<SettingsController>();
 
   bool get isLoggedIn => settingsController.userId != null;
-  bool get stayLoggedIn => settingsController.stayLoggedIn;
 
   Future<bool> login(String login, String password,
       {bool stayLoggedIn = false}) async {
@@ -23,14 +22,13 @@ class AuthenticationService {
         .passwordEqualTo(password)
         .findFirst();
 
-    settingsController.userId = foundUser?.id;
-    settingsController.stayLoggedIn = stayLoggedIn;
+    settingsController.setUserId(foundUser?.id, save: stayLoggedIn);
 
     return foundUser != null;
   }
 
   void logout() {
-    settingsController.userId = null;
+    settingsController.setUserId(null, save: true);
   }
 
   Future<bool> register(String login, String password) async {

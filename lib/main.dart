@@ -5,6 +5,8 @@ import 'src/di/di_init.dart';
 import 'src/settings/settings_controller.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   configureDependencies();
 
   // Set up the SettingsController, which will glue user settings to multiple

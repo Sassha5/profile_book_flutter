@@ -26,9 +26,16 @@ class SettingsController with ChangeNotifier {
   late Locale _locale;
   Locale get locale => _locale;
 
-  bool stayLoggedIn = false;
+  Id? _userId;
+  Id? get userId => _userId;
 
-  Id? userId;
+  void setUserId(Id? value, {bool save = false}){
+    _userId = value;
+
+    if (save){
+      _settingsService.updateUserId(value);
+    }
+  }
 
   void setLocale(Locale? newLocale){
     if (newLocale != null && locale != newLocale){
@@ -41,8 +48,11 @@ class SettingsController with ChangeNotifier {
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
   Future<void> loadSettings() async {
+    await _settingsService.init();
+
     _themeMode = await _settingsService.themeMode();
     _locale = await _settingsService.locale();
+    _userId = await _settingsService.userId();
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
