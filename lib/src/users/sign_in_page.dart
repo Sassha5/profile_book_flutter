@@ -5,20 +5,25 @@ import 'package:profile_book_flutter/src/profiles/profile_list_page.dart';
 import 'package:profile_book_flutter/src/users/authentication_service.dart';
 import 'package:profile_book_flutter/src/users/sign_up_page.dart';
 
-class SignInPage extends StatelessWidget {
-  SignInPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   static const routeName = '/signin';
 
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
   final authService = getIt.get<AuthenticationService>();
 
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool stayLoggedIn = false;
+
   @override
   Widget build(BuildContext context) {
-    var stayLoggedIn = false;
-
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -41,12 +46,12 @@ class SignInPage extends StatelessWidget {
                 hintText: 'Password',
               ),
             ),
-            const Spacer(),
+            const Spacer(flex: 2,),
             Row(
               children: [
                 Checkbox(
                   value: stayLoggedIn,
-                  onChanged: (value) => stayLoggedIn = value!,
+                  onChanged: (value) => setState(() => stayLoggedIn = value!),
                 ),
                 const Text('Remember me'),
                 const Spacer(),
@@ -57,7 +62,7 @@ class SignInPage extends StatelessWidget {
                           stayLoggedIn: stayLoggedIn);
 
                       if (result && context.mounted) {
-                        context.beamToNamed(ProfileListPage.routeName);
+                        context.beamToReplacementNamed(ProfileListPage.routeName, stacked: false);
                       }
                     },
                     child: const SizedBox(
@@ -68,12 +73,13 @@ class SignInPage extends StatelessWidget {
                         ))),
               ],
             ),
+            const SizedBox(height: 10,),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Divider(height: 1, thickness: 1, color: Colors.red,),//not visible
+                Expanded(child: Divider(thickness: 1, endIndent: 10,)),
                 Text('or'),
-                Divider(thickness: 1,),
+                Expanded(child: Divider(thickness: 1, indent: 10,)),
               ],
             ),
             TextButton(

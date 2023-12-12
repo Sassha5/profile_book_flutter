@@ -50,12 +50,12 @@ class SignUpPage extends StatelessWidget {
                 hintText: 'Confirm Password',
               ),
             ),
-            const Spacer(),
+            const Spacer(flex: 2,),
             ElevatedButton(
                 onPressed: () async {
-                  await _signUp();
+                  var result = await _signUp();
 
-                  if (context.mounted) {
+                  if (result && context.mounted) {
                     context.beamBack();
                   }
                 },
@@ -71,10 +71,14 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  Future _signUp() async {
+  Future<bool> _signUp() async {
     if (confirmPasswordController.text == passwordController.text) {
       return authenticationService.register(
           loginController.text, passwordController.text);
+    }
+    else {
+      //todo popup
+      return false;
     }
   }
 }

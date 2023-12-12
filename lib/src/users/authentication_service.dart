@@ -11,7 +11,7 @@ class AuthenticationService {
   final userService = getIt.get<UserService>();
   final settingsController = getIt.get<SettingsController>();
 
-  Id? get userId => settingsController.userId;
+  bool get isLoggedIn => settingsController.userId != null;
   bool get stayLoggedIn => settingsController.stayLoggedIn;
 
   Future<bool> login(String login, String password,

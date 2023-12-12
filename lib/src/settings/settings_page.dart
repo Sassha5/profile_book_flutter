@@ -73,10 +73,11 @@ class SettingsPage extends StatelessWidget {
                 }),
             Center(
               child: ElevatedButton.icon(
-                icon: const Icon(Icons.logout),
+                  icon: const Icon(Icons.logout),
                   onPressed: () {
                     authService.logout();
-                    context.beamToReplacementNamed(SignInPage.routeName);
+                    context.beamToReplacementNamed(SignInPage.routeName,
+                        stacked: false);
                   },
                   label: const SizedBox(
                       height: 50,

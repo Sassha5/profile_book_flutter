@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
+import 'package:profile_book_flutter/src/users/authentication_service.dart';
 import 'package:profile_book_flutter/src/users/sign_in_page.dart';
 import 'package:profile_book_flutter/src/users/sign_up_page.dart';
 
@@ -15,22 +16,38 @@ import 'settings/settings_page.dart';
 class MyApp extends StatelessWidget {
   MyApp({
     super.key,
-  }){
-    Widget startPage = SignInPage();
+  }) {
+    Widget startPage = const SignInPage();
     if (settingsController.stayLoggedIn && settingsController.userId != null) {
       startPage = const ProfileListPage();
     }
-    
+
     routerDelegate = BeamerDelegate(
+      guards: [
+        BeamGuard(
+          pathPatterns: [ProfileListPage.routeName],
+          check: (context, state) =>
+              getIt.get<AuthenticationService>().isLoggedIn,
+          beamToNamed: (_, __) => SignInPage.routeName,
+        ),
+        BeamGuard(
+          pathPatterns: [SignInPage.routeName],
+          check: (context, state) =>
+              !getIt.get<AuthenticationService>().isLoggedIn,
+          beamToNamed: (_, __) => ProfileListPage.routeName,
+        ),
+      ],
       locationBuilder: RoutesLocationBuilder(
         routes: {
           // Return either Widgets or BeamPages if more customization is needed
           '/': (context, state, data) => startPage,
-          SignInPage.routeName: (context, state, data) => SignInPage(),
+          SignInPage.routeName: (context, state, data) => const SignInPage(),
           SignUpPage.routeName: (context, state, data) => SignUpPage(),
           SettingsPage.routeName: (context, state, data) => SettingsPage(),
-          ProfileListPage.routeName: (context, state, data) => const ProfileListPage(),
-          ProfileAddEditPage.routeName: (context, state, data) => const ProfileAddEditPage(),
+          ProfileListPage.routeName: (context, state, data) =>
+              const ProfileListPage(),
+          ProfileAddEditPage.routeName: (context, state, data) =>
+              const ProfileAddEditPage(),
           // '/books/:bookId': (context, state, data) {
           //   // Take the path parameter of interest from BeamState
           //   final bookId = state.pathParameters['bookId']!;
@@ -59,7 +76,7 @@ class MyApp extends StatelessWidget {
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
-    
+
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -94,12 +111,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-ThemeData lightTheme = ThemeData(
-  primaryColor: Colors.amberAccent
-);
+ThemeData lightTheme = ThemeData(primaryColor: Colors.amberAccent);
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.amber,
-  
 );
