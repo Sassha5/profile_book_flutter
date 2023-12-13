@@ -17,10 +17,7 @@ class ProfileController with ChangeNotifier {
   }
 
   Future addOrUpdate(Profile profile) async {
-    //if exists
-    //await _profileService.update(profile);
-    //else
-    await _profileService.add(profile);
+    await _profileService.put(profile);
     await loadItems();
   }
 

@@ -15,13 +15,9 @@ class ProfileService {
     return db.profiles.filter().userIdEqualTo(_settingsController.userId!).findAll();
   }
 
-  Future add(Profile profile) async {
+  Future put(Profile profile) async {
     var db = await IsarService.getDB();
     db.writeTxnSync<int>(() => db.profiles.putSync(profile));
-  }
-
-  Future update(Profile profile) async {
-
   }
 
   Future delete(Profile profile) async {

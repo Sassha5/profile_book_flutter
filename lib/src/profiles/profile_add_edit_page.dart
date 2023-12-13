@@ -26,10 +26,17 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
 
   final _nameFieldController = TextEditingController();
 
-  File? imageFile;
+  late Profile profile = Profile(userId: settingsController.userId!);
 
   @override
   Widget build(BuildContext context) {
+    if (context.currentBeamLocation.data is Profile) {
+      profile = context.currentBeamLocation.data as Profile;
+      _nameFieldController.text = profile.name;
+      
+      context.currentBeamLocation.data = null;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add new profile'),
@@ -42,7 +49,7 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
             Center(
               child: InkResponse(
                   onTap: _pickImage,
-                  child: ProfileAvatar(imageFile?.path, radius: 100)),
+                  child: ProfileAvatar(profile.image, radius: 100)),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -63,15 +70,18 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
   }
 
   void _saveProfile(BuildContext context) async {
-    var newProfile = Profile(userId: settingsController.userId!);
-    newProfile.name = _nameFieldController.text;
+    profile.name = _nameFieldController.text;
 
     var documents = await getApplicationDocumentsDirectory();
-    var savedImage =
-        await imageFile?.copy('${documents.path}/${newProfile.name}');
 
-    newProfile.image = savedImage?.path;
-    await controller.addOrUpdate(newProfile);
+    if (profile.image != null) {
+      var savedImage =
+          await File(profile.image!).copy('${documents.path}/${profile.name}');
+
+      profile.image = savedImage.path;
+    }
+
+    await controller.addOrUpdate(profile);
 
     if (context.mounted) {
       context.beamBack();
@@ -85,7 +95,7 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
         final pickedImage = await ImagePicker().pickImage(source: source);
         if (pickedImage != null) {
           setState(() {
-            imageFile = File(pickedImage.path);
+            profile.image = pickedImage.path;
           });
         }
       }
@@ -93,7 +103,7 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
       //todo show snackbar
     }
   }
-  
+
   Future<ImageSource?> _selectSource(BuildContext context) {
     return showDialog<ImageSource>(
         context: context,

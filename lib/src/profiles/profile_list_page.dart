@@ -41,6 +41,12 @@ class _ProfileListPageState extends State<ProfileListPage> {
 
     var profileActions = [
       IconButton(
+          icon: const Icon(Icons.edit),
+          onPressed: () {
+            context.beamToNamed(ProfileAddEditPage.routeName,
+                data: controller.items.elementAt(_selectedIndex!));
+          }),
+      IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () {
             controller.delete(controller.items.elementAt(_selectedIndex!));
