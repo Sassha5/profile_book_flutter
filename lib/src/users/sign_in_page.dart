@@ -52,17 +52,7 @@ class _SignInPageState extends State<SignInPage> {
                 const Text('Remember me'),
                 const Spacer(),
                 ElevatedButton(
-                    onPressed: () async {
-                      var result = await authService.login(
-                          emailController.text, passwordController.text,
-                          stayLoggedIn: stayLoggedIn);
-
-                      if (result && context.mounted) {
-                        context.beamToReplacementNamed(
-                            ProfileListPage.routeName,
-                            stacked: false);
-                      }
-                    },
+                    onPressed: () => _logIn(context),
                     child: const SizedBox(
                         height: 50,
                         width: 100,
@@ -85,5 +75,21 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+  }
+
+  void _logIn(BuildContext context) async {
+    var result = await authService.login(
+        emailController.text, passwordController.text,
+        stayLoggedIn: stayLoggedIn);
+
+    if (context.mounted) {
+      if (result) {
+        context.beamToReplacementNamed(ProfileListPage.routeName,
+            stacked: false);
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Could not log in')));
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
+import 'package:profile_book_flutter/src/widgets/profile_avatar.dart';
 
 import '../settings/settings_page.dart';
 import 'profile_add_edit_page.dart';
@@ -72,12 +73,9 @@ class _ProfileListPageState extends State<ProfileListPage> {
                 final item = controller.items.elementAt(index);
                 return ListTile(
                     title: Text(item.name),
-                    subtitle: Text(DateFormat('dd.MM.yyyy').format(item.creationDate)),
-                    leading: const CircleAvatar(
-                      // Display the Flutter Logo image asset.
-                      foregroundImage:
-                          AssetImage('assets/images/flutter_logo.png'),
-                    ),
+                    subtitle: Text(
+                        DateFormat('dd.MM.yyyy').format(item.creationDate)),
+                    leading: ProfileAvatar(item.image),
                     selected: index == _selectedIndex,
                     onTap: () {
                       setState(() => _selectedIndex =

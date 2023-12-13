@@ -12,5 +12,7 @@ class Profile {
 
   String name = "test";
 
+  String? image;
+
   DateTime creationDate = DateTime.now();
 }
