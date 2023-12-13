@@ -11,12 +11,12 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../profiles/profile_controller.dart' as _i7;
-import '../profiles/profile_service.dart' as _i4;
-import '../settings/settings_controller.dart' as _i8;
-import '../settings/settings_service.dart' as _i5;
-import '../users/authentication_service.dart' as _i3;
-import '../users/user_service.dart' as _i6;
+import '../profiles/profile_controller.dart' as _i8;
+import '../profiles/profile_service.dart' as _i7;
+import '../settings/settings_controller.dart' as _i5;
+import '../settings/settings_service.dart' as _i3;
+import '../users/authentication_service.dart' as _i6;
+import '../users/user_service.dart' as _i4;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -29,14 +29,18 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.singleton<_i5.SettingsService>(_i5.SettingsService());
-    gh.singleton<_i6.UserService>(_i6.UserService());
-    gh.singleton<_i8.SettingsController>(
-        _i8.SettingsController(gh<_i5.SettingsService>()));
-    gh.singleton<_i4.ProfileService>(_i4.ProfileService());
-    gh.singleton<_i7.ProfileController>(
-        _i7.ProfileController(gh<_i4.ProfileService>()));
-    gh.singleton<_i3.AuthenticationService>(_i3.AuthenticationService());
+    gh.singleton<_i3.SettingsService>(_i3.SettingsService());
+    gh.singleton<_i4.UserService>(_i4.UserService());
+    gh.singleton<_i5.SettingsController>(
+        _i5.SettingsController(gh<_i3.SettingsService>()));
+    gh.singleton<_i6.AuthenticationService>(_i6.AuthenticationService(
+      gh<_i4.UserService>(),
+      gh<_i5.SettingsController>(),
+    ));
+    gh.singleton<_i7.ProfileService>(
+        _i7.ProfileService(gh<_i5.SettingsController>()));
+    gh.singleton<_i8.ProfileController>(
+        _i8.ProfileController(gh<_i7.ProfileService>()));
     return this;
   }
 }

@@ -1,5 +1,8 @@
 # profile_book_flutter
 
+Feature list:
+Isar DB, GetIt DI, Beamer navigation, Shared Preferences, ChangeNotifier, async services, localization, theming, input validation
+
 A new Flutter project.
 
 ## Getting Started

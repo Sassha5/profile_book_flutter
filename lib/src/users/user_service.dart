@@ -11,9 +11,9 @@ class UserService {
     return db.users.where().findAll();
   }
 
-  Future<User?> searchByLogin(String login) async {
+  Future<User?> searchByEmail(String email) async {
     var db = await IsarService.getDB();
-    return db.users.filter().loginEqualTo(login).findFirst();
+    return db.users.filter().emailEqualTo(email).findFirst();
   }
 
   Future<int> add(User user) async {

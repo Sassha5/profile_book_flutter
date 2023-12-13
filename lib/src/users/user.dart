@@ -8,7 +8,7 @@ class User {
 
   Id id = Isar.autoIncrement;
 
-  String login = '';
+  String email = '';
   //todo add security
   String password = '';
 }

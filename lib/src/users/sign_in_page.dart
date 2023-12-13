@@ -4,6 +4,8 @@ import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_list_page.dart';
 import 'package:profile_book_flutter/src/users/authentication_service.dart';
 import 'package:profile_book_flutter/src/users/sign_up_page.dart';
+import 'package:profile_book_flutter/src/widgets/email_field.dart';
+import 'package:profile_book_flutter/src/widgets/password_field.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -17,16 +19,16 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final authService = getIt.get<AuthenticationService>();
 
-  final loginController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   bool stayLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
-    if (context.currentBeamLocation.data is String){
+    if (context.currentBeamLocation.data is String) {
       setState(() {
-        loginController.text = context.currentBeamLocation.data as String;
+        emailController.text = context.currentBeamLocation.data as String;
       });
     }
 
@@ -37,22 +39,10 @@ class _SignInPageState extends State<SignInPage> {
         child: Column(
           children: [
             const Spacer(),
-            TextField(
-              autocorrect: false,
-              controller: loginController,
-              decoration: const InputDecoration(hintText: 'Login'),
-            ),
+            EmailField(controller: emailController),
             const SizedBox(height: 10),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                hintText: 'Password',
-              ),
-            ),
-            const Spacer(flex: 2,),
+            PasswordField(controller: passwordController),
+            const Spacer(flex: 2),
             Row(
               children: [
                 Checkbox(
@@ -64,28 +54,28 @@ class _SignInPageState extends State<SignInPage> {
                 ElevatedButton(
                     onPressed: () async {
                       var result = await authService.login(
-                          loginController.text, passwordController.text,
+                          emailController.text, passwordController.text,
                           stayLoggedIn: stayLoggedIn);
 
                       if (result && context.mounted) {
-                        context.beamToReplacementNamed(ProfileListPage.routeName, stacked: false);
+                        context.beamToReplacementNamed(
+                            ProfileListPage.routeName,
+                            stacked: false);
                       }
                     },
                     child: const SizedBox(
                         height: 50,
                         width: 100,
-                        child: Center(
-                          child: Text('Sign In'),
-                        ))),
+                        child: Center(child: Text('Sign In')))),
               ],
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(height: 10),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(child: Divider(thickness: 1, endIndent: 10,)),
+                Expanded(child: Divider(thickness: 1, endIndent: 10)),
                 Text('or'),
-                Expanded(child: Divider(thickness: 1, indent: 10,)),
+                Expanded(child: Divider(thickness: 1, indent: 10)),
               ],
             ),
             TextButton(
