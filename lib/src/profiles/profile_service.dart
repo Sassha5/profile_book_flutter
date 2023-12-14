@@ -15,13 +15,18 @@ class ProfileService {
     return db.profiles.filter().userIdEqualTo(_settingsController.userId!).findAll();
   }
 
-  Future put(Profile profile) async {
+  Future<int> put(Profile profile) async {
     var db = await IsarService.getDB();
-    db.writeTxnSync<int>(() => db.profiles.putSync(profile));
+    return db.writeTxnSync<int>(() => db.profiles.putSync(profile));
   }
 
-  Future delete(Profile profile) async {
+  Future<bool> delete(Profile profile) async {
     var db = await IsarService.getDB();
-    db.writeTxnSync<bool>(() => db.profiles.deleteSync(profile.id));
+    return db.writeTxnSync<bool>(() => db.profiles.deleteSync(profile.id));
+  }
+
+  Future<int> deleteMany(Iterable<Profile> profiles) async {
+    var db = await IsarService.getDB();
+    return db.writeTxnSync<int>(() => db.profiles.deleteAllSync(profiles.map((e) => e.id).toList()));
   }
 }

@@ -2,7 +2,7 @@
 
 Feature list:
 - Ready: Isar DB, GetIt DI, Beamer navigation, Camera/Gallery, Shared Preferences, ChangeNotifier, async services, localization, input validation
-- Todo: theming, image cropping, transition animations, maybe bloc?, email confirmation with deeplink, profile sharing with qr and bluetooth
+- Todo: theming, drag and drop reorder, image cropping, transition animations, maybe bloc?, email confirmation with deeplink, profile sharing with qr and bluetooth
 
 ## Assets
 

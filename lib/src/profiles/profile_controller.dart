@@ -11,18 +11,27 @@ class ProfileController with ChangeNotifier {
 
   Iterable<Profile> items = List.empty();
 
-  Future loadItems() async {
+  Future<Iterable<Profile>> loadItems() async {
     items = await _profileService.getUserProfiles();
     notifyListeners();
+    return items;
   }
 
-  Future addOrUpdate(Profile profile) async {
-    await _profileService.put(profile);
+  Future<int> addOrUpdate(Profile profile) async {
+    var result = await _profileService.put(profile);
     await loadItems();
+    return result;
   }
 
-  Future delete(Profile profile) async {
-    await _profileService.delete(profile);
+  Future<bool> delete(Profile profile) async {
+    var result = await _profileService.delete(profile);
     await loadItems();
+    return result;
+  }
+  
+  Future<int> deleteMany(Iterable<Profile> profiles) async {
+    var result = await _profileService.deleteMany(profiles);
+    await loadItems();
+    return result;
   }
 }
