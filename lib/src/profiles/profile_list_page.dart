@@ -67,15 +67,17 @@ class _ProfileListPageState extends State<ProfileListPage> {
               initializeSelection();
             }
 
-            return ListView.builder(
+            return ReorderableListView.builder(
               // Providing a restorationId allows the ListView to restore the
               // scroll position when a user leaves and returns to the app after it
               // has been killed while running in the background.
               restorationId: 'ProfileListView',
+              buildDefaultDragHandles: false,
               itemCount: controller.items.length,
               itemBuilder: (BuildContext context, int index) {
                 final item = controller.items.elementAt(index);
                 return ListTile(
+                  key: Key(item.id.toString()),
                   title: Text(item.name),
                   subtitle:
                       Text(DateFormat('dd.MM.yyyy').format(item.creationDate)),
@@ -110,8 +112,18 @@ class _ProfileListPageState extends State<ProfileListPage> {
                           value: _selectedItems[index],
                           onChanged: (bool? x) => _toggle(index),
                         )
-                      : null,
+                      : ReorderableDragStartListener(
+                          index: index,
+                          child: const SizedBox(
+                              width: 48,
+                              child: Icon(Icons.drag_indicator_outlined))),
                 );
+              },
+              onReorder: (int oldIndex, int newIndex) {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                controller.reorder(oldIndex, newIndex);
               },
             );
           }),

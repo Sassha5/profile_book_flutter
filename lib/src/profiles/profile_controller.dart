@@ -9,10 +9,17 @@ class ProfileController with ChangeNotifier {
 
   final ProfileService _profileService;
 
-  Iterable<Profile> items = List.empty();
+  List<Profile> _items = List.empty();
+  Iterable<Profile> get items => _items;
+
+  void reorder(int oldIndex, int newIndex) {
+    final Profile item = _items.removeAt(oldIndex);
+    _items.insert(newIndex, item); //todo also change order in db
+    notifyListeners();
+  }
 
   Future<Iterable<Profile>> loadItems() async {
-    items = await _profileService.getUserProfiles();
+    _items = await _profileService.getUserProfiles();
     notifyListeners();
     return items;
   }
@@ -28,7 +35,7 @@ class ProfileController with ChangeNotifier {
     await loadItems();
     return result;
   }
-  
+
   Future<int> deleteMany(Iterable<Profile> profiles) async {
     var result = await _profileService.deleteMany(profiles);
     await loadItems();
