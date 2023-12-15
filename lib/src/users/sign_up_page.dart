@@ -11,13 +11,13 @@ class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
 
   static const routeName = '/signup';
-  static const fieldSpacing = 10.0;
+  static const _fieldSpacing = 10.0;
 
-  final authenticationService = getIt.get<AuthenticationService>();
+  final _authenticationService = getIt.get<AuthenticationService>();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -32,13 +32,23 @@ class SignUpPage extends StatelessWidget {
           child: Column(
             children: [
               const Spacer(),
-              EmailField(controller: emailController),
-              const SizedBox(height: fieldSpacing),
-              PasswordField(controller: passwordController),
-              const SizedBox(height: fieldSpacing),
+              EmailField(controller: _emailController),
+              const SizedBox(height: _fieldSpacing),
+              PasswordField(controller: _passwordController),
+              const SizedBox(height: _fieldSpacing),
               PasswordField(
-                  controller: confirmPasswordController,
+                  controller: _confirmPasswordController,
                   hintText: 'Confirm Password'),
+              const SizedBox(height: _fieldSpacing),
+              const Align(
+                alignment: Alignment.centerRight,
+                child: Tooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  showDuration: Duration(seconds: 3),
+                    message:
+                        'The password should contain at least 8 characters and include a number, a special character, upper and lower case letter',
+                    child: Icon(Icons.info)),
+              ),
               const Spacer(flex: 2),
               ElevatedButton(
                   onPressed: () async => await _signUp(context),
@@ -57,13 +67,13 @@ class SignUpPage extends StatelessWidget {
 
   Future<void> _signUp(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      if (confirmPasswordController.text == passwordController.text) {
-        var result = await authenticationService.register(
-            emailController.text, passwordController.text);
+      if (_confirmPasswordController.text == _passwordController.text) {
+        var result = await _authenticationService.register(
+            _emailController.text, _passwordController.text);
 
         if (context.mounted) {
           if (result) {
-            context.beamBack(data: emailController.text);
+            context.beamBack(data: _emailController.text);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Could not register')));

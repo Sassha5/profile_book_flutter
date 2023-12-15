@@ -17,19 +17,18 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final authService = getIt.get<AuthenticationService>();
+  final _authService = getIt.get<AuthenticationService>();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  bool stayLoggedIn = false;
+  bool _stayLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
     if (context.currentBeamLocation.data is String) {
-      setState(() {
-        emailController.text = context.currentBeamLocation.data as String;
-      });
+        _emailController.text = context.currentBeamLocation.data as String;
+        context.currentBeamLocation.data = null;
     }
 
     return Scaffold(
@@ -39,15 +38,15 @@ class _SignInPageState extends State<SignInPage> {
         child: Column(
           children: [
             const Spacer(),
-            EmailField(controller: emailController),
+            EmailField(controller: _emailController),
             const SizedBox(height: 10),
-            PasswordField(controller: passwordController),
+            PasswordField(controller: _passwordController),
             const Spacer(flex: 2),
             Row(
               children: [
                 Checkbox(
-                  value: stayLoggedIn,
-                  onChanged: (value) => setState(() => stayLoggedIn = value!),
+                  value: _stayLoggedIn,
+                  onChanged: (value) => setState(() => _stayLoggedIn = value!),
                 ),
                 const Text('Remember me'),
                 const Spacer(),
@@ -77,10 +76,16 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  @override void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   void _logIn(BuildContext context) async {
-    var result = await authService.login(
-        emailController.text, passwordController.text,
-        stayLoggedIn: stayLoggedIn);
+    var result = await _authService.login(
+        _emailController.text, _passwordController.text,
+        stayLoggedIn: _stayLoggedIn);
 
     if (context.mounted) {
       if (result) {

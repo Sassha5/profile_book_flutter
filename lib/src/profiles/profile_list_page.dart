@@ -34,7 +34,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
   SelectionState selectionState = SelectionState.noSelection;
 
   int? _selectedIndex;
-  late List<bool> _selectedItems;
+  List<bool> _selectedItems = List.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
                         setState(() => _selectedIndex = null);
                         break;
                       case SelectionState.multipleItems:
-                        _toggle(index);
+                        _toggleSelection(index);
                         break;
                       default:
                     }
@@ -110,7 +110,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
                   trailing: selectionState == SelectionState.multipleItems
                       ? Checkbox(
                           value: _selectedItems[index],
-                          onChanged: (bool? x) => _toggle(index),
+                          onChanged: (bool? x) => _toggleSelection(index),
                         )
                       : ReorderableDragStartListener(
                           index: index,
@@ -143,7 +143,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
     _selectedItems = List<bool>.generate(controller.items.length, (_) => false);
   }
 
-  void _toggle(int index) {
+  void _toggleSelection(int index) {
     if (selectionState == SelectionState.multipleItems) {
       setState(() => _selectedItems[index] = !_selectedItems[index]);
     }

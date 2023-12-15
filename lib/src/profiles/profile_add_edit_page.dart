@@ -10,7 +10,6 @@ import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 import 'package:profile_book_flutter/src/settings/settings_controller.dart';
 import 'package:profile_book_flutter/src/widgets/profile_avatar.dart';
 
-/// Displays detailed information about a SampleItem.
 class ProfileAddEditPage extends StatefulWidget {
   const ProfileAddEditPage({super.key});
 
@@ -33,13 +32,14 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
     if (context.currentBeamLocation.data is Profile) {
       profile = context.currentBeamLocation.data as Profile;
       _nameFieldController.text = profile.name;
-      
+
       context.currentBeamLocation.data = null;
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add new profile'),
+        title: Text(
+            '${context.currentBeamLocation.data is Profile ? 'Add new' : 'Edit'} profile'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40),
@@ -67,6 +67,11 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
         child: const Icon(Icons.save, color: Colors.white, size: 28),
       ),
     );
+  }
+
+  @override void dispose() {
+    _nameFieldController.dispose();
+    super.dispose();
   }
 
   void _saveProfile(BuildContext context) async {
