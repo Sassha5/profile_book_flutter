@@ -2,17 +2,17 @@ import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:profile_book_flutter/src/isar/isar_service.dart';
 import 'package:profile_book_flutter/src/profiles/profile.dart';
-import 'package:profile_book_flutter/src/settings/settings_controller.dart';
+import 'package:profile_book_flutter/src/users/authentication_service.dart';
 
 @singleton
 class ProfileService {
-  ProfileService(this._settingsController);
+  ProfileService(this._authService);
 
-  final SettingsController _settingsController;
+  final AuthenticationService _authService;
 
   Future<List<Profile>> getUserProfiles() async {
     var db = await IsarService.getDB();
-    return db.profiles.filter().userIdEqualTo(_settingsController.userId!).findAll();
+    return db.profiles.filter().userIdEqualTo(_authService.userId!).findAll();
   }
 
   Future<int> put(Profile profile) async {

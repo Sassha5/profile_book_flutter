@@ -81,7 +81,7 @@ class SettingsPage extends StatelessWidget {
                   },
                   label: const SizedBox(
                       height: 50,
-                      width: 220,
+                      width: 100,
                       child: Center(
                         child: Text('Logout'),
                       ))),

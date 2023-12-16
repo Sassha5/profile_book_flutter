@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
+import 'package:profile_book_flutter/src/users/authentication_service.dart';
 import 'package:profile_book_flutter/src/users/sign_in_page.dart';
 import 'package:profile_book_flutter/src/users/sign_up_page.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     super.key,
   }) {
     Widget startPage = const SignInPage();
-    if (settingsController.userId != null) {
+    if (authService.userId != null) {
       startPage = const ProfileListPage();
     }
 
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
   }
 
   late final settingsController = getIt.get<SettingsController>();
+  late final authService = getIt.get<AuthenticationService>();
   late final BeamerDelegate routerDelegate;
 
   @override

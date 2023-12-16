@@ -1,18 +1,29 @@
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:profile_book_flutter/src/isar/isar_service.dart';
-import 'package:profile_book_flutter/src/settings/settings_controller.dart';
+import 'package:profile_book_flutter/src/settings/settings_service.dart';
 import 'package:profile_book_flutter/src/users/user.dart';
 import 'package:profile_book_flutter/src/users/user_service.dart';
 
 @singleton
 class AuthenticationService {
-  AuthenticationService(this._userService, this._settingsController);
+  AuthenticationService(this._userService, this._settingsService);
 
   final UserService _userService;
-  final SettingsController _settingsController;
+  final SettingsService _settingsService;
 
-  bool get isLoggedIn => _settingsController.userId != null;
+  Id? _userId;
+  Id? get userId => _userId;
+
+  void setUserId(Id? value, {bool save = false}){
+    _userId = value;
+
+    if (save){
+      _settingsService.updateUserId(value);
+    }
+  }
+
+  bool get isLoggedIn => userId != null;
 
   Future<bool> login(String email, String password,
       {bool stayLoggedIn = false}) async {
@@ -23,13 +34,13 @@ class AuthenticationService {
         .passwordEqualTo(password)
         .findFirst();
 
-    _settingsController.setUserId(foundUser?.id, save: stayLoggedIn);
+    setUserId(foundUser?.id, save: stayLoggedIn);
 
     return foundUser != null;
   }
 
   void logout() {
-    _settingsController.setUserId(null, save: true);
+    setUserId(null, save: true);
   }
 
   Future<bool> register(String email, String password) async {

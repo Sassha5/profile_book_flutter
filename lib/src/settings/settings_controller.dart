@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:isar/isar.dart';
+import 'package:profile_book_flutter/src/users/authentication_service.dart';
 
 import 'settings_service.dart';
 
@@ -11,10 +11,11 @@ import 'settings_service.dart';
 /// uses the SettingsService to store and retrieve user settings.
 @singleton
 class SettingsController with ChangeNotifier {
-  SettingsController(this._settingsService);
+  SettingsController(this._settingsService, this._authService);
 
   // Make SettingsService a private variable so it is not used directly.
   final SettingsService _settingsService;
+  final AuthenticationService _authService;
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
@@ -25,17 +26,6 @@ class SettingsController with ChangeNotifier {
 
   late Locale _locale;
   Locale get locale => _locale;
-
-  Id? _userId;
-  Id? get userId => _userId;
-
-  void setUserId(Id? value, {bool save = false}){
-    _userId = value;
-
-    if (save){
-      _settingsService.updateUserId(value);
-    }
-  }
 
   void setLocale(Locale? newLocale){
     if (newLocale != null && locale != newLocale){
@@ -52,7 +42,7 @@ class SettingsController with ChangeNotifier {
 
     _themeMode = await _settingsService.themeMode();
     _locale = await _settingsService.locale();
-    _userId = await _settingsService.userId();
+    _authService.setUserId(await _settingsService.userId());
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
