@@ -24,7 +24,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Hero(tag: 'signup', child: Material(child: Text('Sign Up', style: TextStyle(fontSize: 20),)))),
       body: Padding(
         padding: const EdgeInsets.all(40),
         child: Form(
@@ -43,8 +43,8 @@ class SignUpPage extends StatelessWidget {
               const Align(
                 alignment: Alignment.centerRight,
                 child: Tooltip(
-                  triggerMode: TooltipTriggerMode.tap,
-                  showDuration: Duration(seconds: 3),
+                    triggerMode: TooltipTriggerMode.tap,
+                    showDuration: Duration(seconds: 3),
                     message:
                         'The password should contain at least 8 characters and include a number, a special character, upper and lower case letter',
                     child: Icon(Icons.info)),

@@ -11,6 +11,11 @@ class ProfileService {
   final AuthenticationService _authService;
 
   Future<List<Profile>> getUserProfiles() async {
+    if (_authService.userId == null)
+    {
+      return List<Profile>.empty();
+    }
+    
     var db = await IsarService.getDB();
     return db.profiles.filter().userIdEqualTo(_authService.userId!).findAll();
   }

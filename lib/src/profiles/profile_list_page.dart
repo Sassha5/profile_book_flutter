@@ -90,8 +90,12 @@ class _ProfileListPageState extends State<ProfileListPage> {
                         setState(() => _selectedIndex = index);
                         break;
                       case SelectionState.oneItem:
-                        selectionState = SelectionState.noSelection;
-                        setState(() => _selectedIndex = null);
+                        if (_selectedIndex == index) {
+                          selectionState = SelectionState.noSelection;
+                          setState(() => _selectedIndex = null);
+                        } else {
+                          setState(() => _selectedIndex = index);
+                        }
                         break;
                       case SelectionState.multipleItems:
                         _toggleSelection(index);

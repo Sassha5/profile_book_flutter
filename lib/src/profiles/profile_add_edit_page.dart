@@ -69,7 +69,8 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
     );
   }
 
-  @override void dispose() {
+  @override
+  void dispose() {
     _nameFieldController.dispose();
     super.dispose();
   }

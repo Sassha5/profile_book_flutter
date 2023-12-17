@@ -27,8 +27,8 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     if (context.currentBeamLocation.data is String) {
-        _emailController.text = context.currentBeamLocation.data as String;
-        context.currentBeamLocation.data = null;
+      _emailController.text = context.currentBeamLocation.data as String;
+      context.currentBeamLocation.data = null;
     }
 
     return Scaffold(
@@ -69,14 +69,15 @@ class _SignInPageState extends State<SignInPage> {
             ),
             TextButton(
                 onPressed: () => context.beamToNamed(SignUpPage.routeName),
-                child: const Text('Sign Up')),
+                child: const Hero(tag: 'signup', child: Material(child: Text('Sign Up')))),
           ],
         ),
       ),
     );
   }
 
-  @override void dispose() {
+  @override
+  void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();

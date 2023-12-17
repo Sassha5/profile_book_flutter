@@ -10,7 +10,10 @@ class ProfileAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(backgroundImage: _getImage(imagePath), radius: radius);
+    return Hero(
+        tag: imagePath ?? 'image',
+        child: CircleAvatar(
+            backgroundImage: _getImage(imagePath), radius: radius));
   }
 
   ImageProvider<Object> _getImage(String? path) {
