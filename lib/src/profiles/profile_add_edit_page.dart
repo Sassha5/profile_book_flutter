@@ -118,11 +118,23 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
               children: <Widget>[
                 SimpleDialogOption(
                   onPressed: () => Navigator.pop(context, ImageSource.camera),
-                  child: const Text('Camera'),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.camera),
+                      SizedBox(width: 10),
+                      Text('Camera'),
+                    ],
+                  ),
                 ),
                 SimpleDialogOption(
                   onPressed: () => Navigator.pop(context, ImageSource.gallery),
-                  child: const Text('Gallery'),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.image),
+                      SizedBox(width: 10),
+                      Text('Gallery'),
+                    ],
+                  ),
                 ),
               ],
             ));

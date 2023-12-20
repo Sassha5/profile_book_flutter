@@ -5,6 +5,7 @@ import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
 import 'package:profile_book_flutter/src/widgets/profile_avatar.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../settings/settings_page.dart';
 import 'profile_add_edit_page.dart';
@@ -163,6 +164,13 @@ class _ProfileListPageState extends State<ProfileListPage> {
 
     var singleSelectionActions = [
       IconButton(
+          icon: const Icon(Icons.share),
+          onPressed: () => _showQR(
+              data: controller.items
+                  .elementAt(_selectedIndex!)
+                  .toJson()
+                  .toString())),
+      IconButton(
           icon: const Icon(Icons.edit),
           onPressed: () {
             context.beamToNamed(ProfileAddEditPage.routeName,
@@ -178,17 +186,16 @@ class _ProfileListPageState extends State<ProfileListPage> {
 
     var multipleSelectionActions = [
       IconButton(
+          icon: const Icon(Icons.share),
+          onPressed: () => _showQR(
+              data: _getSelectedProfiles()
+                  .map((e) => e.toJson())
+                  .toList()
+                  .toString())),
+      IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () async {
-            var profilesToDelete = List<Profile>.empty(growable: true);
-
-            for (var i = 0; i < _selectedItems.length; i++) {
-              if (_selectedItems[i]) {
-                profilesToDelete.add(controller.items.elementAt(i));
-              }
-            }
-
-            await controller.deleteMany(profilesToDelete);
+            await controller.deleteMany(_getSelectedProfiles());
             setState(() =>
                 selectionState = SelectionState.noSelection); //not working
             initializeSelection();
@@ -200,5 +207,33 @@ class _ProfileListPageState extends State<ProfileListPage> {
       SelectionState.oneItem => singleSelectionActions,
       SelectionState.multipleItems => multipleSelectionActions
     };
+  }
+
+  void _showQR({required String data}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                width: 200,
+                height: 200,
+                child: QrImageView(data: data)),
+          );
+        });
+  }
+
+  List<Profile> _getSelectedProfiles() {
+    var selectedProfiles = List<Profile>.empty(growable: true);
+
+    for (var i = 0; i < _selectedItems.length; i++) {
+      if (_selectedItems[i]) {
+        selectedProfiles.add(controller.items.elementAt(i));
+      }
+    }
+
+    return selectedProfiles;
   }
 }

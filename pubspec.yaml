@@ -24,6 +24,8 @@ dependencies:
   language_picker: ^0.4.3
   shared_preferences:
   image_picker: ^1.0.5
+  animations: ^2.0.10
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   injectable_generator:  

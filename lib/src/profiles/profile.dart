@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:isar/isar.dart';
 
 part 'profile.g.dart';
@@ -5,6 +7,13 @@ part 'profile.g.dart';
 @Collection()
 class Profile {
   Profile({required this.userId});
+
+  Profile.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as Id,
+        userId = json['userId'] as int,
+        name = json['name'] as String,
+        image = json['image'] as String,
+        creationDate = json['creationDate'] as DateTime;
 
   Id id = Isar.autoIncrement;
 
@@ -15,4 +24,17 @@ class Profile {
   String? image;
 
   DateTime creationDate = DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'userId': userId,
+        'name': name,
+        'image': image,
+        'creationDate': creationDate,
+      };
+
+  @override
+  String toString() { //crashing
+    return jsonEncode(this);
+  }
 }
