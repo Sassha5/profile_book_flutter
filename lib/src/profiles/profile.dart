@@ -30,11 +30,11 @@ class Profile {
         'userId': userId,
         'name': name,
         'image': image,
-        'creationDate': creationDate,
+        'creationDate': creationDate.toIso8601String(),
       };
 
   @override
-  String toString() { //crashing
-    return jsonEncode(this);
+  String toString() {
+    return jsonEncode(toJson());
   }
 }

@@ -168,7 +168,6 @@ class _ProfileListPageState extends State<ProfileListPage> {
           onPressed: () => _showQR(
               data: controller.items
                   .elementAt(_selectedIndex!)
-                  .toJson()
                   .toString())),
       IconButton(
           icon: const Icon(Icons.edit),
