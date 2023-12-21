@@ -25,6 +25,9 @@ class Profile {
 
   DateTime creationDate = DateTime.now();
 
+  @Ignore()
+  bool isSelected = false;
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'userId': userId,

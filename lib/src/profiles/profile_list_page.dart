@@ -2,12 +2,11 @@ import 'dart:convert';
 
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile.dart';
 import 'package:profile_book_flutter/src/profiles/profile_controller.dart';
-import 'package:profile_book_flutter/src/widgets/profile_avatar.dart';
+import 'package:profile_book_flutter/src/profiles/profile_list_tile.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../settings/settings_page.dart';
@@ -24,54 +23,39 @@ class ProfileListPage extends StatefulWidget {
   }
 }
 
-enum SelectionState { noSelection, oneItem, multipleItems }
-
 class _ProfileListPageState extends State<ProfileListPage> {
   @override
   void initState() {
-    controller.loadItems().then((value) => initializeSelection());
+    controller.loadItems();
     super.initState();
   }
 
   final ProfileController controller = getIt.get<ProfileController>();
 
-  SelectionState selectionState = SelectionState.noSelection;
-
-  int? _selectedIndex;
-  List<bool> _selectedItems = List.empty();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profiles'),
-        leading: selectionState == SelectionState.multipleItems
-            ? IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  setState(() => selectionState = SelectionState.noSelection);
-                  initializeSelection();
-                },
-              )
-            : null,
-        actions: _getAppBarActions(selectionState),
-      ),
+    return ListenableBuilder(
+        listenable: controller,
+        builder: (context, widget) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Profiles'),
+              leading: controller.selectionState == SelectionState.multipleItems
+                  ? IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: controller.clearSelection,
+                    )
+                  : null,
+              actions: _getAppBarActions(controller.selectionState),
+            ),
 
-      // To work with lists that may contain a large number of items, it’s best
-      // to use the ListView.builder constructor.
-      //
-      // In contrast to the default ListView constructor, which requires
-      // building all Widgets up front, the ListView.builder constructor lazily
-      // builds Widgets as they’re scrolled into view.
-      body: ListenableBuilder(
-          listenable: controller,
-          builder: (context, widget) {
-            if (controller.items.isNotEmpty &&
-                controller.items.length > _selectedItems.length) {
-              initializeSelection();
-            }
-
-            return controller.items.isEmpty
+            // To work with lists that may contain a large number of items, it’s best
+            // to use the ListView.builder constructor.
+            //
+            // In contrast to the default ListView constructor, which requires
+            // building all Widgets up front, the ListView.builder constructor lazily
+            // builds Widgets as they’re scrolled into view.
+            body: controller.items.isEmpty
                 ? emptyState
                 : ReorderableListView.builder(
                     // Providing a restorationId allows the ListView to restore the
@@ -83,12 +67,15 @@ class _ProfileListPageState extends State<ProfileListPage> {
                     itemBuilder: (BuildContext context, int index) {
                       final item = controller.items.elementAt(index);
                       return ProfileListTile(
+                        key: Key(item.id.toString()),
                         item: item,
-                        isSelected: index == _selectedIndex,
-                        trailing: selectionState == SelectionState.multipleItems
+                        isSelected: item.isSelected,
+                        trailing: controller.selectionState ==
+                                SelectionState.multipleItems
                             ? Checkbox(
-                                value: _selectedItems[index],
-                                onChanged: (bool? x) => _toggleSelection(index),
+                                value: item.isSelected,
+                                onChanged: (bool? x) =>
+                                    controller.toggleSelection(index),
                               )
                             : ReorderableDragStartListener(
                                 index: index,
@@ -97,8 +84,11 @@ class _ProfileListPageState extends State<ProfileListPage> {
                                   child: Icon(Icons.drag_indicator_outlined),
                                 ),
                               ),
-                        onTap: () => _onItemTapped(index),
-                        onLongPress: () => _onItemLongPress(index),
+                        onTap: () => controller.toggleSelection(index),
+                        onLongPress: () {
+                          controller.startMultiselection();
+                          controller.toggleSelection(index);
+                        },
                       );
                     },
                     onReorder: (int oldIndex, int newIndex) {
@@ -107,16 +97,17 @@ class _ProfileListPageState extends State<ProfileListPage> {
                       }
                       controller.reorder(oldIndex, newIndex);
                     },
-                  );
-          }),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
-        shape: const CircleBorder(),
-        tooltip: 'Add',
-        onPressed: () => context.beamToNamed(ProfileAddEditPage.routeName),
-        child: const Icon(Icons.add, color: Colors.white, size: 28),
-      ),
-    );
+                  ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
+              shape: const CircleBorder(),
+              tooltip: 'Add',
+              onPressed: () =>
+                  context.beamToNamed(ProfileAddEditPage.routeName),
+              child: const Icon(Icons.add, color: Colors.white, size: 28),
+            ),
+          );
+        });
   }
 
   Widget get emptyState => const Column(
@@ -138,46 +129,6 @@ class _ProfileListPageState extends State<ProfileListPage> {
         ],
       );
 
-  void initializeSelection() {
-    _selectedItems = List<bool>.generate(controller.items.length, (_) => false);
-  }
-
-  void _onItemTapped(int index) {
-    switch (selectionState) {
-      case SelectionState.noSelection:
-        selectionState = SelectionState.oneItem;
-        setState(() => _selectedIndex = index);
-        break;
-      case SelectionState.oneItem:
-        if (_selectedIndex == index) {
-          selectionState = SelectionState.noSelection;
-          setState(() => _selectedIndex = null);
-        } else {
-          setState(() => _selectedIndex = index);
-        }
-        break;
-      case SelectionState.multipleItems:
-        _toggleSelection(index);
-        break;
-      default:
-    }
-  }
-
-  void _onItemLongPress(int index) {
-    if (selectionState != SelectionState.multipleItems) {
-      setState(() {
-        _selectedItems[index] = true;
-        selectionState = SelectionState.multipleItems;
-      });
-    }
-  }
-
-  void _toggleSelection(int index) {
-    if (selectionState == SelectionState.multipleItems) {
-      setState(() => _selectedItems[index] = !_selectedItems[index]);
-    }
-  }
-
   List<Widget> _getAppBarActions(SelectionState selectionState) {
     var noSelectionActions = [
       IconButton(
@@ -193,38 +144,29 @@ class _ProfileListPageState extends State<ProfileListPage> {
     var singleSelectionActions = [
       IconButton(
           icon: const Icon(Icons.share),
-          onPressed: () => _showQR(
-              data: controller.items.elementAt(_selectedIndex!).toString())),
+          onPressed: () => _showQR(data: controller.selectedItem.toString())),
       IconButton(
           icon: const Icon(Icons.edit),
-          onPressed: () {
-            context.beamToNamed(ProfileAddEditPage.routeName,
-                data: controller.items.elementAt(_selectedIndex!));
-          }),
+          onPressed: () => context.beamToNamed(ProfileAddEditPage.routeName,
+              data: controller.selectedItem)),
       IconButton(
           icon: const Icon(Icons.delete),
-          onPressed: () {
-            controller.delete(controller.items.elementAt(_selectedIndex!));
-            setState(() => _selectedIndex = null);
-          }),
+          onPressed: () => controller.delete(controller.selectedItem!)),
     ];
 
     var multipleSelectionActions = [
       IconButton(
           icon: const Icon(Icons.share),
           onPressed: () => _showQR(
-              data: _getSelectedProfiles()
+              data: controller.items
+                  .where((element) => element.isSelected)
                   .map((e) => e.toJson())
                   .toList()
                   .toString())),
       IconButton(
           icon: const Icon(Icons.delete),
-          onPressed: () async {
-            await controller.deleteMany(_getSelectedProfiles());
-            setState(() =>
-                selectionState = SelectionState.noSelection); //not working
-            initializeSelection();
-          }),
+          onPressed: () => controller.deleteMany(
+              controller.items.where((element) => element.isSelected))),
     ];
 
     return switch (selectionState) {
@@ -242,8 +184,6 @@ class _ProfileListPageState extends State<ProfileListPage> {
             detectionSpeed: DetectionSpeed.noDuplicates,
           ),
           onDetect: (capture) {
-            final List<Barcode> barcodes = capture.barcodes;
-
             Navigator.of(context).pop();
 
             showDialog(
@@ -252,8 +192,10 @@ class _ProfileListPageState extends State<ProfileListPage> {
                   final profileCells =
                       List<ProfileListTile>.empty(growable: true);
 
-                  for (final barcode in barcodes) {
-                    final Profile profile = Profile.fromJson(jsonDecode(barcode.rawValue ?? '')); //only for single profile
+                  for (final barcode in capture.barcodes) {
+                    final Profile profile = Profile.fromJson(jsonDecode(
+                        barcode.rawValue ??
+                            '')); //currently only for single profile
                     profileCells.add(ProfileListTile(item: profile));
                   }
 
@@ -268,62 +210,16 @@ class _ProfileListPageState extends State<ProfileListPage> {
         );
       });
 
-  void _showQR({required String data}) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Center(
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                width: 200,
-                height: 200,
-                child: QrImageView(data: data)),
-          );
-        });
-  }
-
-  List<Profile> _getSelectedProfiles() {
-    var selectedProfiles = List<Profile>.empty(growable: true);
-
-    for (var i = 0; i < _selectedItems.length; i++) {
-      if (_selectedItems[i]) {
-        selectedProfiles.add(controller.items.elementAt(i));
-      }
-    }
-
-    return selectedProfiles;
-  }
-}
-
-class ProfileListTile extends StatelessWidget {
-  const ProfileListTile({
-    super.key,
-    required this.item,
-    this.isSelected = false,
-    this.trailing,
-    this.onTap,
-    this.onLongPress,
-  });
-
-  final Profile item;
-  final bool isSelected;
-  final Widget? trailing;
-  final void Function()? onTap;
-  final void Function()? onLongPress;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      key: Key(item.id.toString()),
-      title: Text(item.name),
-      subtitle: Text(DateFormat('dd.MM.yyyy').format(item.creationDate)),
-      leading: ProfileAvatar(item.image),
-      selected: isSelected,
-      onTap: onTap,
-      onLongPress: onLongPress,
-      trailing: trailing,
-    );
-  }
+  void _showQR({required String data}) => showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              width: 200,
+              height: 200,
+              child: QrImageView(data: data)),
+        );
+      });
 }
