@@ -13,7 +13,7 @@ class Profile {
         userId = json['userId'] as int,
         name = json['name'] as String,
         image = json['image'] as String,
-        creationDate = json['creationDate'] as DateTime;
+        creationDate = DateTime.parse(json['creationDate']);
 
   Id id = Isar.autoIncrement;
 

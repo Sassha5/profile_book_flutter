@@ -26,6 +26,7 @@ dependencies:
   image_picker: ^1.0.5
   animations: ^2.0.10
   qr_flutter: ^4.1.0
+  mobile_scanner: ^3.5.5
 
 dev_dependencies:
   injectable_generator:  

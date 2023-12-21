@@ -74,6 +74,8 @@ class SignUpPage extends StatelessWidget {
         if (context.mounted) {
           if (result) {
             context.beamBack(data: _emailController.text);
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Registered successfully!')));
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Could not register')));
