@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
@@ -97,13 +98,26 @@ class _ProfileListPageState extends State<ProfileListPage> {
                       controller.reorder(oldIndex, newIndex);
                     },
                   ),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
-              shape: const CircleBorder(),
-              tooltip: 'Add',
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(ProfileAddEditPage.routeName),
-              child: const Icon(Icons.add, color: Colors.white, size: 28),
+            floatingActionButton: OpenContainer(
+              openBuilder: (BuildContext context, VoidCallback _) => const ProfileAddEditPage(),
+              transitionType: ContainerTransitionType.fadeThrough,
+              closedElevation: 6.0,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              closedColor: Theme.of(context).colorScheme.background,
+              closedBuilder:
+                  (BuildContext context, VoidCallback openContainer) {
+                return FloatingActionButton(
+                  backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
+                  shape: const CircleBorder(),
+                  tooltip: 'Add',
+                  onPressed: openContainer,
+                  child: const Icon(Icons.add, color: Colors.white, size: 28),
+                );
+              },
             ),
           );
         });
@@ -136,7 +150,8 @@ class _ProfileListPageState extends State<ProfileListPage> {
       ),
       IconButton(
         icon: const Icon(Icons.settings),
-        onPressed: () => Navigator.of(context).pushNamed(SettingsPage.routeName),
+        onPressed: () =>
+            Navigator.of(context).pushNamed(SettingsPage.routeName),
       ),
     ];
 
@@ -146,7 +161,8 @@ class _ProfileListPageState extends State<ProfileListPage> {
           onPressed: () => _showQR(data: [controller.selectedItem])),
       IconButton(
           icon: const Icon(Icons.edit),
-          onPressed: () => Navigator.of(context).pushNamed(ProfileAddEditPage.routeName,
+          onPressed: () => Navigator.of(context).pushNamed(
+              ProfileAddEditPage.routeName,
               arguments: controller.selectedItem)),
       IconButton(
           icon: const Icon(Icons.delete),
@@ -219,7 +235,8 @@ class _ProfileListPageState extends State<ProfileListPage> {
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               width: 200,
               height: 200,
-              child: QrImageView(data: jsonEncode(data))), //todo also encode image
+              child:
+                  QrImageView(data: jsonEncode(data))), //todo also encode image
         );
       });
 }
