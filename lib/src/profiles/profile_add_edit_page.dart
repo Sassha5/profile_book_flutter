@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,17 +28,16 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.currentBeamLocation.data is Profile) {
-      profile = context.currentBeamLocation.data as Profile;
+    
+    if (ModalRoute.of(context)?.settings.arguments is Profile) {
+      profile = ModalRoute.of(context)!.settings.arguments as Profile;
       _nameFieldController.text = profile.name;
-
-      context.currentBeamLocation.data = null;
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            '${context.currentBeamLocation.data is Profile ? 'Add new' : 'Edit'} profile'),
+            '${ModalRoute.of(context)?.settings.arguments is Profile ? 'Add new' : 'Edit'} profile'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40),
@@ -90,7 +88,7 @@ class _ProfileAddEditPageState extends State<ProfileAddEditPage> {
     await _controller.addOrUpdate(profile);
 
     if (context.mounted) {
-      context.beamBack();
+      Navigator.of(context).pop();
     }
   }
 

@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/profiles/profile_list_page.dart';
@@ -26,11 +25,6 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.currentBeamLocation.data is String) {
-      _emailController.text = context.currentBeamLocation.data as String;
-      context.currentBeamLocation.data = null;
-    }
-
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -68,8 +62,12 @@ class _SignInPageState extends State<SignInPage> {
               ],
             ),
             TextButton(
-                onPressed: () => context.beamToNamed(SignUpPage.routeName),
-                child: const Hero(tag: 'signup', child: Material(child: Text('Sign Up')))),
+                onPressed: () async {
+                  var resultEmail = await Navigator.of(context)
+                      .pushNamed(SignUpPage.routeName);
+                  setState(() => _emailController.text = resultEmail as String);
+                },
+                child: const Text('Sign Up')),
           ],
         ),
       ),
@@ -90,8 +88,7 @@ class _SignInPageState extends State<SignInPage> {
 
     if (context.mounted) {
       if (result) {
-        context.beamToReplacementNamed(ProfileListPage.routeName,
-            stacked: false);
+        Navigator.of(context).pushNamedAndRemoveUntil(ProfileListPage.routeName, (_) => false);
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Could not log in')));

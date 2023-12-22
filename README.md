@@ -1,8 +1,8 @@
 # profile_book_flutter
 
 Feature list:
-- Ready: Isar DB, GetIt DI, Beamer navigation, Camera/Gallery, Shared Preferences, ChangeNotifier, async services, localization, input validation, drag and drop reorder, list multiselect, profile sharing with qr
-- Todo: fix navigation, splashscreen, user security, theming, image cropping, transition animations, maybe bloc?, email confirmation with deeplink, profile sharing with bluetooth
+- Ready: Isar DB, GetIt DI, Beamer navigation (removed for transition animations), Camera/Gallery, Shared Preferences, ChangeNotifier, async services, localization, input validation, drag and drop reorder, list multiselect, profile sharing with qr
+- Todo: splashscreen, user security, theming, image cropping, transition animations, maybe bloc?, email confirmation with deeplink, profile sharing with bluetooth
 
 ## Assets
 

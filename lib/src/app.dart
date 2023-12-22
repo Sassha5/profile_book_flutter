@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,46 +15,10 @@ import 'settings/settings_page.dart';
 class MyApp extends StatelessWidget {
   MyApp({
     super.key,
-  }) {
-    Widget startPage = const SignInPage();
-    if (authService.userId != null) {
-      startPage = const ProfileListPage();
-    }
-
-    routerDelegate = BeamerDelegate(
-      locationBuilder: RoutesLocationBuilder(
-        routes: {
-          // Return either Widgets or BeamPages if more customization is needed
-          '/': (context, state, data) => startPage,
-          SignInPage.routeName: (context, state, data) => const SignInPage(),
-          SignUpPage.routeName: (context, state, data) => SignUpPage(),
-          SettingsPage.routeName: (context, state, data) => SettingsPage(),
-          ProfileListPage.routeName: (context, state, data) =>
-              const ProfileListPage(),
-          ProfileAddEditPage.routeName: (context, state, data) =>
-              const ProfileAddEditPage(),
-          // '/books/:bookId': (context, state, data) {
-          //   // Take the path parameter of interest from BeamState
-          //   final bookId = state.pathParameters['bookId']!;
-          //   // Collect arbitrary data that persists throughout navigation
-          //   final info = (data as MyObject).info;
-          //   // Use BeamPage to define custom behavior
-          //   return BeamPage(
-          //     key: ValueKey('book-$bookId'),
-          //     title: 'A Book #$bookId',
-          //     popToNamed: '/',
-          //     type: BeamPageType.scaleTransition,
-          //     child: BookDetailsScreen(bookId, info),
-          //   );
-          // }
-        },
-      ).call,
-    );
-  }
+  });
 
   late final settingsController = getIt.get<SettingsController>();
   late final authService = getIt.get<AuthenticationService>();
-  late final BeamerDelegate routerDelegate;
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +30,18 @@ class MyApp extends StatelessWidget {
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
-        return MaterialApp.router(
-          routeInformationParser: BeamerParser(),
-          routerDelegate: routerDelegate,
+        return MaterialApp(
+          initialRoute: authService.userId == null
+              ? SignInPage.routeName
+              : ProfileListPage.routeName,
+          routes: {
+            SignInPage.routeName: (context) => const SignInPage(),
+            SignUpPage.routeName: (context) => SignUpPage(),
+            SettingsPage.routeName: (context) => SettingsPage(),
+            ProfileListPage.routeName: (context) => const ProfileListPage(),
+            ProfileAddEditPage.routeName: (context) =>
+                const ProfileAddEditPage(),
+          },
           // Providing a restorationScopeId allows the Navigator built by the
           // MaterialApp to restore the navigation stack when a user leaves and
           // returns to the app after it has been killed while running in the

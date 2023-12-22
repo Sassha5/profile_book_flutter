@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
 import 'package:profile_book_flutter/src/users/authentication_service.dart';
@@ -24,7 +23,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Hero(tag: 'signup', child: Material(child: Text('Sign Up', style: TextStyle(fontSize: 20),)))),
+      appBar: AppBar(title: const Text('Sign Up', style: TextStyle(fontSize: 20),)),
       body: Padding(
         padding: const EdgeInsets.all(40),
         child: Form(
@@ -73,7 +72,7 @@ class SignUpPage extends StatelessWidget {
 
         if (context.mounted) {
           if (result) {
-            context.beamBack(data: _emailController.text);
+            Navigator.of(context).pop(_emailController.text);
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Registered successfully!')));
           } else {

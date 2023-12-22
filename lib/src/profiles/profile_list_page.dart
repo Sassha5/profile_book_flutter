@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:profile_book_flutter/src/di/di_init.dart';
@@ -74,7 +73,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
                                 SelectionState.multipleItems
                             ? Checkbox(
                                 value: item.isSelected,
-                                onChanged: (bool? x) =>
+                                onChanged: (_) =>
                                     controller.toggleSelection(index),
                               )
                             : ReorderableDragStartListener(
@@ -103,7 +102,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
               shape: const CircleBorder(),
               tooltip: 'Add',
               onPressed: () =>
-                  context.beamToNamed(ProfileAddEditPage.routeName),
+                  Navigator.of(context).pushNamed(ProfileAddEditPage.routeName),
               child: const Icon(Icons.add, color: Colors.white, size: 28),
             ),
           );
@@ -137,18 +136,18 @@ class _ProfileListPageState extends State<ProfileListPage> {
       ),
       IconButton(
         icon: const Icon(Icons.settings),
-        onPressed: () => context.beamToNamed(SettingsPage.routeName),
+        onPressed: () => Navigator.of(context).pushNamed(SettingsPage.routeName),
       ),
     ];
 
     var singleSelectionActions = [
       IconButton(
           icon: const Icon(Icons.share),
-          onPressed: () => _showQR(data: controller.selectedItem.toString())),
+          onPressed: () => _showQR(data: [controller.selectedItem])),
       IconButton(
           icon: const Icon(Icons.edit),
-          onPressed: () => context.beamToNamed(ProfileAddEditPage.routeName,
-              data: controller.selectedItem)),
+          onPressed: () => Navigator.of(context).pushNamed(ProfileAddEditPage.routeName,
+              arguments: controller.selectedItem)),
       IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () => controller.delete(controller.selectedItem!)),
@@ -161,8 +160,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
               data: controller.items
                   .where((element) => element.isSelected)
                   .map((e) => e.toJson())
-                  .toList()
-                  .toString())),
+                  .toList())),
       IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () => controller.deleteMany(
@@ -193,10 +191,12 @@ class _ProfileListPageState extends State<ProfileListPage> {
                       List<ProfileListTile>.empty(growable: true);
 
                   for (final barcode in capture.barcodes) {
-                    final Profile profile = Profile.fromJson(jsonDecode(
-                        barcode.rawValue ??
-                            '')); //currently only for single profile
-                    profileCells.add(ProfileListTile(item: profile));
+                    Iterable profiles = jsonDecode(barcode.rawValue ?? '');
+
+                    for (var element in profiles) {
+                      final Profile profile = Profile.fromJson(element);
+                      profileCells.add(ProfileListTile(item: profile));
+                    }
                   }
 
                   return Dialog(
@@ -210,7 +210,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
         );
       });
 
-  void _showQR({required String data}) => showDialog(
+  void _showQR({required Object data}) => showDialog(
       context: context,
       builder: (context) {
         return Center(
@@ -219,7 +219,7 @@ class _ProfileListPageState extends State<ProfileListPage> {
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               width: 200,
               height: 200,
-              child: QrImageView(data: data)),
+              child: QrImageView(data: jsonEncode(data))), //todo also encode image
         );
       });
 }

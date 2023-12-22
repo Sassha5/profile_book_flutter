@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:language_picker/language_picker_dropdown.dart';
@@ -76,8 +75,7 @@ class SettingsPage extends StatelessWidget {
                   icon: const Icon(Icons.logout),
                   onPressed: () {
                     authService.logout();
-                    context.beamToReplacementNamed(SignInPage.routeName,
-                        stacked: false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(SignInPage.routeName, (_) => false);
                   },
                   label: const SizedBox(
                       height: 50,
