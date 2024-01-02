@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "453751069999",
+    "firebase_url": "https://profile-book-dde34-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "profile-book-dde34",
+    "storage_bucket": "profile-book-dde34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453751069999:android:dac85a1e6943cd677155da",
+        "android_client_info": {
+          "package_name": "com.example.profile_book_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOmuTrqOLoGz4XhxnoeI8l-r4retNK-wI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
